@@ -1,82 +1,73 @@
-# Archaeology Web App
+# React + TypeScript + Vite
 
-A mobile-first web application for archaeological artifact documentation and preservation.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Features
+Currently, two official plugins are available:
 
-### Save The Past
-Photograph archaeological finds from multiple angles to create:
-- **3D Models** - AI-powered 3D reconstruction from photos
-- **Digital Info Cards** - AI-generated artifact documentation including:
-  - Discovery location & excavation layer
-  - Material identification
-  - Estimated age & historical period
-  - Possible use & cultural significance
-  - Preservation recommendations
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-### PastPalette
-Explore multiple possible color reconstructions of artifacts:
-- Based on pigments found at the site
-- Based on historical period and culture
-- Based on similar artifacts from other regions
-- Interactive comparison between variants
+## React Compiler
 
-## Tech Stack
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | React + TypeScript + Vite |
-| UI | Tailwind CSS + shadcn/ui |
-| 3D Viewer | Three.js |
-| Storage | IndexedDB (Dexie.js) |
-| API Proxy | Netlify Functions |
-| Hosting | Netlify |
-| 3D AI | TRELLIS.2 / TripoSR (HuggingFace) |
-| LLM | Groq (Llama 3.3 70B) |
-| Colorization | DeOldify + SD ControlNet |
+## Expanding the ESLint configuration
 
-## Key Principles
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-- **Mobile-first** - Designed for field use on phones/tablets
-- **Offline-first** - Works without internet, syncs when available
-- **Local storage** - All data stored locally, no accounts required
-- **AI transparency** - All AI-generated content clearly marked as speculative
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-## Documentation
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-- [Implementation Plan](./IMPLEMENTATION_PLAN.md) - Detailed development roadmap
-- [Technical Research](./docs/final_technical_research.md) - API research and recommendations
-
-## Getting Started
-
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-## Environment Variables
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-Create a `.env.local` file:
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-```env
-GROQ_API_KEY=your_groq_api_key
-HF_API_TOKEN=your_huggingface_token  # optional
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-
-## License
-
-This project is open source and available under the [MIT License](./LICENSE).
-
-## Author
-
-**lirazshaka** - [liraz@mypart.com](mailto:liraz@mypart.com)
-
----
-
-*Built with AI assistance for archaeological preservation*

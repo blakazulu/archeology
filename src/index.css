@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
+/* Tailwind v4 Theme Configuration */
+@theme {
+  /* Archaeology Color Palette - NO PURPLE */
+  --color-terracotta: #C65D3B;
+  --color-sienna: #8B4513;
+  --color-desert-sand: #D4A574;
+  --color-clay: #B7723A;
+  --color-parchment: #FDF5E6;
+  --color-aged-paper: #F5E6D3;
+  --color-stone-gray: #6B6B6B;
+  --color-charcoal: #2D2D2D;
+  --color-bone-white: #FFFEF9;
+  --color-oxidized-bronze: #4A7C59;
+  --color-desert-teal: #3D8B8B;
+  --color-rust-red: #A63D2F;
+  --color-gold-ochre: #C9A227;
+
+  /* Font Families */
+  --font-heading: "Playfair Display", serif;
+  --font-sans: "Source Sans 3", system-ui, sans-serif;
+  --font-mono: ui-monospace, "JetBrains Mono", monospace;
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+/* Base Styles */
+@layer base {
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+
+  html, body, #root {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  #root {
+    display: flex;
+    flex-direction: column;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-parchment);
+    color: var(--color-charcoal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+
+  /* Focus visible for accessibility */
+  :focus-visible {
+    outline: 2px solid var(--color-terracotta);
+    outline-offset: 2px;
+  }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+}
+
+/* Safe area utility classes */
+@utility safe-area-top {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+@utility safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Custom scrollbar for non-mobile */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-aged-paper);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-desert-sand);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-clay);
+  }
+}

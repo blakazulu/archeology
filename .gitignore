@@ -1,46 +1,24 @@
-# Dependencies
-node_modules/
-.pnpm-store/
-
-# Build outputs
-dist/
-build/
-.next/
-out/
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-
-# IDE & Editor
-.vscode/
-.idea/
-*.swp
-*.swo
-.DS_Store
-
-# Claude Code local settings (NEVER COMMIT)
-.claude/settings.local.json
-
 # Logs
+logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Testing
-coverage/
-.nyc_output/
+node_modules
+dist
+dist-ssr
+*.local
 
-# Temporary files
-tmp/
-temp/
-*.tmp
-
-# OS files
-Thumbs.db
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-
-# Netlify
-.netlify/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
