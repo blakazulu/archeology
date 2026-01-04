@@ -1,0 +1,307 @@
+# AI Architecture for Archaeological Documentation
+
+This document consolidates and structures all findings regarding the feasibility, tools, and architectures required to build the two-part archaeology web application:
+
+1. **Save The Past** – multi-angle capture, AI-assisted 3D reconstruction, and metadata generation.
+2. **PastPalette** – AI-based multiple color reconstructions grounded in archaeological evidence.
+
+The analysis prioritizes **free and open-source options first**, and only then explores **paid/commercial alternatives** where free solutions are insufficient.
+
+---
+
+## Part 1: Save The Past
+
+### Goal
+
+Enable archaeologists, students, or volunteers to photograph an artifact from multiple angles and automatically generate:
+
+* An accurate 3D model
+* A digital information card (location, layer, material, age, use, significance)
+* Cloud-backed preservation (local-first, sync later)
+
+---
+
+## 1.1 3D Reconstruction (Photogrammetry)
+
+### Free / Open-Source Options
+
+#### Meshroom (AliceVision)
+
+* Open-source photogrammetry pipeline
+* Produces textured meshes from multiple photos
+* GPU accelerated (NVIDIA CUDA required)
+* Outputs OBJ, FBX, Alembic (convertible to glTF)
+* Suitable for academic and cultural heritage use
+
+**Pros**
+
+* Fully free
+* High-quality results for object-scale artifacts
+* Scriptable via CLI and Python
+
+**Cons**
+
+* Heavy processing
+* Requires server or workstation
+* Not browser-native
+
+**Best use**: Server-side batch processing
+
+---
+
+#### COLMAP (+ OpenMVS)
+
+* Academic-grade Structure-from-Motion and Multi-View Stereo
+* Excellent geometric accuracy
+* Requires separate texturing step
+
+**Pros**
+
+* Very accurate geometry
+* Highly customizable
+
+**Cons**
+
+* More engineering effort
+* No UI or API out of the box
+
+**Best use**: Custom backend pipeline
+
+---
+
+#### Other Open Pipelines
+
+* OpenMVG + OpenMVS
+* Regard3D
+* Blender photogrammetry add-ons
+
+**Best use**: Research-driven or experimental workflows
+
+---
+
+### Free Cloud / Mobile-Friendly Options
+
+#### KIRI Engine (Recommended Free Option)
+
+* Cloud photogrammetry
+* Free unlimited scans (up to 150 photos per scan)
+* REST API available
+* Exports OBJ, GLTF, USDZ
+
+**Pros**
+
+* No GPU needed locally
+* Excellent mobile support
+* Easy API integration
+
+**Cons**
+
+* External dependency
+* Limited algorithm control
+
+**Best use**: Mobile-first field capture + web viewing
+
+---
+
+#### Polycam (Free Tier)
+
+* Cloud photogrammetry
+* Free tier limited to ~10 models
+* Strong quality
+
+**Best use**: Prototyping and demos
+
+---
+
+### Platform-Specific Free Option
+
+#### Apple Object Capture (ARKit)
+
+* On-device photogrammetry for iOS/macOS
+* Excellent accuracy
+
+**Cons**
+
+* Apple-only
+* Not web-native
+
+**Best use**: Dedicated iPad/iPhone capture app
+
+---
+
+## 1.2 Metadata Generation (AI Assistance)
+
+### Free AI Approaches
+
+#### Image Classification (Transfer Learning)
+
+* Use CNN or ViT models pretrained on ImageNet
+* Fine-tune on museum or archaeological datasets
+
+**Possible outputs**:
+
+* Material (stone, ceramic, metal)
+* Object category (vessel, tool, ornament)
+
+---
+
+#### Vision-Language Models (CLIP)
+
+* Embed artifact images
+* Match against known artifact databases
+
+**Best use**: Similarity-based inference
+
+---
+
+#### Rule-Based + AI Hybrid
+
+* AI suggests categories
+* Archaeologist validates
+
+**Recommended approach** for credibility
+
+---
+
+## Paid Options (If Needed)
+
+### Photogrammetry
+
+* Agisoft Metashape (one-time license)
+* RealityCapture (fast, high quality)
+* Autodesk ReCap Photo (cloud, subscription)
+
+### Metadata
+
+* Custom AutoML models (Google AutoML, SageMaker)
+* Vision APIs (limited archaeological value)
+
+---
+
+## Part 2: PastPalette
+
+### Goal
+
+Allow users to explore **multiple plausible color reconstructions** of the same artifact based on:
+
+* Found pigments
+* Period and culture
+* Similar artifacts from other regions
+
+---
+
+## 2.1 Free AI Approaches
+
+### Stable Diffusion (Image-to-Image)
+
+* Open-source diffusion model
+* Supports image-to-image generation
+* Can generate multiple variations via prompts
+
+**Enhancements**:
+
+* ControlNet (depth / edge guidance)
+* Prompt conditioning with historical context
+
+**Pros**
+
+* Highly flexible
+* Multiple reconstructions per artifact
+
+**Cons**
+
+* Requires GPU
+* Needs prompt expertise
+
+---
+
+### Exemplar-Based Colorization
+
+* Uses reference artifacts with known colors
+* Transfers palette and patterns
+
+**Best use**: When close historical analogs exist
+
+---
+
+### Traditional Colorization Models (DeOldify etc.)
+
+* Automatic colorization
+* Not historically grounded
+
+**Use only as baseline or demo**
+
+---
+
+### Fine-Tuned Diffusion (Advanced Free Option)
+
+* Train Stable Diffusion on artifact-specific datasets
+* Learn cultural color patterns
+
+**Pros**
+
+* Best historical coherence
+
+**Cons**
+
+* High effort
+* Requires curated data
+
+---
+
+## 2.2 3D Texture Reconstruction
+
+### Free Toolchain
+
+* Blender for UV unwrapping
+* AI-generated textures (Stable Diffusion)
+* Export multiple texture maps
+
+**Result**: One 3D model + multiple swappable textures
+
+---
+
+## Paid Options
+
+* Stability AI API / Replicate
+* DALL·E 3 (concept-level only)
+* Photoshop Generative Fill (manual, expert-in-the-loop)
+
+---
+
+## Recommended Architecture (Practical)
+
+### Phase 1 (Free, MVP)
+
+* Capture: Mobile photos
+* 3D: KIRI Engine API or Meshroom server
+* Viewer: WebGL (Three.js or model-viewer)
+* Color: Stable Diffusion img2img
+* Storage: Local-first, cloud sync later
+
+---
+
+### Phase 2 (Enhanced Accuracy)
+
+* Fine-tune diffusion model
+* Add reference-based color presets
+* Introduce expert validation UI
+
+---
+
+## Key Principles
+
+* AI outputs must be **clearly marked as speculative**
+* Human review is essential for credibility
+* Use open formats (glTF, PNG)
+* Separate heavy processing from client
+
+---
+
+## Final Assessment
+
+* **Yes, an AI model is required**, but not a single one
+* Free and open-source tools are sufficient for a strong MVP
+* Paid tools improve speed, scale, and accuracy, not feasibility
+
+This system is technically feasible today with existing tools.

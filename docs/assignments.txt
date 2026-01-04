@@ -1,0 +1,22 @@
+Archeology website containing 2 parts
+first part - Save The Past:
+
+The web application enables archaeologists, students, or volunteers to photograph an archaeological find 
+from all angles using a phone or tablet camera. The app uses image recognition and 3D reconstruction
+ technology to create an accurate three-dimensional model of the artifact, even when it is fragile or
+ at risk of deterioration. This allows the find to be fully documented on site, immediately upon its discovery.
+
+After the model is created, the system generates a digital information card for each artifact, 
+including essential details such as the discovery location, excavation layer, raw materials, 
+estimated age, possible use, and historical significance.
+All data is stored in the cloud (local storage for begining),
+ensuring that the information is preserved even if the physical artifact is damaged or destroyed.
+
+
+second part - PastPalette:
+The web application enables archaeologists, students, or volunteers to photograph an archaeological find.
+it then does multiple reconstructions of that artifect.
+the technological system makes it possible to view multiple possible color reconstructions of the same artifact,
+ rather than a single version. Through an application or an interactive display, 
+ the visitor can choose between different reconstructions: based on pigments that were found,
+ based on the historical period and culture, or based on similar artifacts from other regions.
