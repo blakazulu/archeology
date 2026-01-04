@@ -1,4 +1,5 @@
 export * from './artifact';
+export * from './camera';
 
 // Re-export commonly used types
 export type {
@@ -14,3 +15,14 @@ export type {
   ProcessingStep,
   ImageAngle,
 } from './artifact';
+
+export type {
+  CameraFacing,
+  CameraStatus,
+  CameraError,
+  CameraErrorType,
+  CameraCapabilities,
+  CameraDevice,
+  UseCameraOptions,
+  UseCameraReturn,
+} from './camera';

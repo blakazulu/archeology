@@ -454,13 +454,13 @@ The app should feel like:
 
 ---
 
-# PHASE 2: Save The Past - Camera & Image Capture
+# PHASE 2: Save The Past - Camera & Image Capture ✅ COMPLETED
 
 **Estimated Duration**: 3-4 days
 
 ## 2.1 Camera Access
 
-- [ ] **2.1.1** Create `useCamera` hook
+- [x] **2.1.1** Create `useCamera` hook
   ```typescript
   // src/hooks/useCamera.ts
   export function useCamera() {
@@ -471,70 +471,70 @@ The app should feel like:
   }
   ```
 
-- [ ] **2.1.2** Handle camera permissions gracefully
+- [x] **2.1.2** Handle camera permissions gracefully
   - Show permission request UI
   - Handle denied permissions
   - Fallback to file upload
 
-- [ ] **2.1.3** Implement camera switching (front/back)
+- [x] **2.1.3** Implement camera switching (front/back)
 
 ## 2.2 Camera Capture Component
 
-- [ ] **2.2.1** Create `CameraView` component
+- [x] **2.2.1** Create `CameraView` component
   - Full-screen camera preview
   - Capture button
   - Flash toggle (if supported)
   - Camera switch button
 
-- [ ] **2.2.2** Create capture overlay with guides
+- [x] **2.2.2** Create capture overlay with guides
   - Grid overlay for artifact centering
   - Tips for good capture angles
   - Progress indicator for multi-shot
 
-- [ ] **2.2.3** Implement image capture
+- [x] **2.2.3** Implement image capture
   - Capture frame from video stream
   - Convert to blob/base64
   - Store in temporary state
 
 ## 2.3 Multi-Image Capture Flow
 
-- [ ] **2.3.1** Create multi-capture mode
+- [x] **2.3.1** Create multi-capture mode
   - Prompt user for multiple angles
   - Show which angles captured (front, back, sides, top)
   - Visual guide for each angle
 
-- [ ] **2.3.2** Create capture preview carousel
+- [x] **2.3.2** Create capture preview carousel
   - Show captured images
   - Allow delete/retake
   - Confirm when done
 
-- [ ] **2.3.3** Implement capture session management
+- [x] **2.3.3** Implement capture session management
   - Track capture progress
   - Save partial captures
   - Resume interrupted captures
 
 ## 2.4 File Upload Fallback
 
-- [ ] **2.4.1** Create file upload component
+- [x] **2.4.1** Create file upload component
   - Drag & drop zone
   - File picker button
   - Support multiple files
 
-- [ ] **2.4.2** Validate uploaded images
+- [x] **2.4.2** Validate uploaded images
   - Check file type (JPEG, PNG, WebP)
   - Check minimum resolution
   - Show error messages
 
-- [ ] **2.4.3** Preview uploaded images before processing
+- [x] **2.4.3** Preview uploaded images before processing
 
 ## 2.5 Image Processing
 
-- [ ] **2.5.1** Create image compression utility
+- [x] **2.5.1** Create image compression utility
   - Resize large images for API upload
   - Maintain aspect ratio
   - Target size: ~1-2MB max
 
-- [ ] **2.5.2** Create image rotation/crop tool (optional)
+- [x] **2.5.2** Create image rotation/crop tool (optional)
   - Basic rotate controls
   - Simple crop to artifact
 
@@ -1074,13 +1074,13 @@ The app should feel like:
 - [x] 1.6.1 - 1.6.4: App shell (4 tasks)
 **Total: 24 tasks** ✅
 
-## Phase 2: Camera (3-4 days)
-- [ ] 2.1.1 - 2.1.3: Camera access (3 tasks)
-- [ ] 2.2.1 - 2.2.3: Camera component (3 tasks)
-- [ ] 2.3.1 - 2.3.3: Multi-capture (3 tasks)
-- [ ] 2.4.1 - 2.4.3: File upload (3 tasks)
-- [ ] 2.5.1 - 2.5.2: Image processing (2 tasks)
-**Total: 14 tasks**
+## Phase 2: Camera (3-4 days) ✅ COMPLETED
+- [x] 2.1.1 - 2.1.3: Camera access (3 tasks)
+- [x] 2.2.1 - 2.2.3: Camera component (3 tasks)
+- [x] 2.3.1 - 2.3.3: Multi-capture (3 tasks)
+- [x] 2.4.1 - 2.4.3: File upload (3 tasks)
+- [x] 2.5.1 - 2.5.2: Image processing (2 tasks)
+**Total: 14 tasks** ✅
 
 ## Phase 3: 3D Reconstruction (4-5 days)
 - [ ] 3.1.1 - 3.1.5: Netlify function (5 tasks)
