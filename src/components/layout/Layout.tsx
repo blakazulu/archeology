@@ -9,8 +9,11 @@ export function Layout() {
       <Header />
 
       {/* Main content area with padding for fixed header and nav */}
-      <main className="pb-20 pt-14">
-        <Outlet />
+      {/* On mobile: bottom padding for nav. On desktop: no bottom nav, more top padding */}
+      <main className="pb-20 pt-14 lg:pb-8 lg:pt-20">
+        <div className="mx-auto max-w-7xl">
+          <Outlet />
+        </div>
       </main>
 
       <BottomNav />

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Camera, Upload, Info, Zap, Layers } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Camera, Upload, Info, Zap, Layers, Palette } from 'lucide-react';
 import { CaptureSession, FileUpload } from '@/components/camera';
 import { cn } from '@/lib/utils';
 import { compressImage, generateId } from '@/lib/utils';
@@ -10,10 +10,15 @@ import type { ImageAngle, Artifact } from '@/types';
 
 type CaptureMethod = 'camera' | 'upload' | null;
 type ReconstructionMode = 'single' | 'multi';
+type CaptureMode = 'reconstruct' | 'colorize';
 
 export function CapturePage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { setCurrentArtifact, setProcessingStatus } = useAppStore();
+
+  // Check if we're in colorize mode from URL param
+  const captureMode: CaptureMode = searchParams.get('mode') === 'colorize' ? 'colorize' : 'reconstruct';
 
   const [captureMethod, setCaptureMethod] = useState<CaptureMethod>(null);
   const [reconstructionMode, setReconstructionMode] = useState<ReconstructionMode>('single');
@@ -66,11 +71,16 @@ export function CapturePage() {
         message: 'Ready to process',
       });
 
-      navigate(`/artifact/${artifactId}`);
+      // Navigate to artifact page - with colors tab if in colorize mode
+      if (captureMode === 'colorize') {
+        navigate(`/artifact/${artifactId}?tab=colors`);
+      } else {
+        navigate(`/artifact/${artifactId}`);
+      }
     } catch (error) {
       console.error('Failed to save captured images:', error);
     }
-  }, [navigate, setCurrentArtifact, setProcessingStatus]);
+  }, [navigate, setCurrentArtifact, setProcessingStatus, captureMode]);
 
   const handleFileUploadComplete = useCallback(async (files: File[]) => {
     const images: Array<{ blob: Blob; angle: ImageAngle }> = files.map((file, index) => ({
@@ -87,7 +97,7 @@ export function CapturePage() {
   if (captureMethod === 'camera') {
     return (
       <CaptureSession
-        mode={reconstructionMode}
+        mode={captureMode === 'colorize' ? 'single' : reconstructionMode}
         onComplete={handleCaptureComplete}
         onCancel={handleCancel}
       />
@@ -99,13 +109,99 @@ export function CapturePage() {
       <FileUpload
         onFilesSelected={handleFileUploadComplete}
         onCancel={handleCancel}
-        maxFiles={reconstructionMode === 'single' ? 1 : 10}
+        maxFiles={captureMode === 'colorize' ? 1 : (reconstructionMode === 'single' ? 1 : 10)}
       />
     );
   }
 
+  // Colorize Mode UI
+  if (captureMode === 'colorize') {
+    return (
+      <div className="px-4 py-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-6 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-desert-teal to-oxidized-bronze mb-4">
+            <Palette className="w-8 h-8 text-bone-white" />
+          </div>
+          <h2 className="font-heading text-2xl font-bold text-sienna mb-2">
+            PastPalette
+          </h2>
+          <p className="text-stone-gray">
+            Restore historical colors to your artifact
+          </p>
+        </div>
+
+        {/* Info Banner */}
+        <div className="mb-6 rounded-xl bg-desert-teal/10 border border-desert-teal/30 p-4">
+          <div className="flex gap-3">
+            <Info className="h-5 w-5 text-desert-teal shrink-0 mt-0.5" />
+            <div className="text-sm">
+              <p className="font-medium text-desert-teal">
+                For best colorization results
+              </p>
+              <p className="text-stone-gray mt-1">
+                Use a clear, well-lit photo of your artifact. The AI will analyze the image and suggest historically-accurate color reconstructions.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Capture Options */}
+        <div className="space-y-4">
+          <h3 className="font-heading text-lg font-semibold text-charcoal">
+            Add Your Artifact Photo
+          </h3>
+
+          <button
+            className="w-full flex items-center gap-4 rounded-xl bg-desert-teal p-5 text-left text-bone-white shadow-md transition-all hover:bg-oxidized-bronze active:scale-[0.98]"
+            onClick={() => setCaptureMethod('camera')}
+          >
+            <div className="rounded-full bg-bone-white/20 p-3">
+              <Camera className="h-8 w-8" />
+            </div>
+            <div>
+              <h4 className="font-semibold text-lg">Use Camera</h4>
+              <p className="text-bone-white/80 text-sm">
+                Take a photo of your artifact
+              </p>
+            </div>
+          </button>
+
+          <button
+            className="w-full flex items-center gap-4 rounded-xl bg-aged-paper border-2 border-dashed border-desert-sand p-5 text-left transition-all hover:border-desert-teal hover:bg-parchment active:scale-[0.98]"
+            onClick={() => setCaptureMethod('upload')}
+          >
+            <div className="rounded-full bg-desert-teal/10 p-3">
+              <Upload className="h-8 w-8 text-desert-teal" />
+            </div>
+            <div>
+              <h4 className="font-semibold text-lg text-charcoal">Upload Photo</h4>
+              <p className="text-stone-gray text-sm">
+                Select an existing photo from your device
+              </p>
+            </div>
+          </button>
+        </div>
+
+        {/* Color Scheme Preview */}
+        <div className="mt-8">
+          <h3 className="font-heading text-lg font-semibold text-charcoal mb-4">
+            Available Color Schemes
+          </h3>
+          <div className="grid grid-cols-2 gap-3">
+            <ColorSchemePreview name="Roman" colors={['#8B0000', '#FFD700', '#FFFFFF', '#000080']} />
+            <ColorSchemePreview name="Greek" colors={['#1E90FF', '#FFD700', '#FFFFFF', '#8B4513']} />
+            <ColorSchemePreview name="Egyptian" colors={['#FFD700', '#00CED1', '#8B4513', '#228B22']} />
+            <ColorSchemePreview name="Original" colors={['#C65D3B', '#8B4513', '#D4A574', '#4A7C59']} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Reconstruct Mode UI (default)
   return (
-    <div className="px-4 py-6">
+    <div className="px-4 py-6 lg:px-8">
       {/* Info Banner */}
       <div className="mb-6 rounded-xl bg-desert-teal/10 border border-desert-teal/30 p-4">
         <div className="flex gap-3">
@@ -243,6 +339,24 @@ export function CapturePage() {
           </li>
         </ul>
       </div>
+    </div>
+  );
+}
+
+// Color scheme preview component for colorize mode
+function ColorSchemePreview({ name, colors }: { name: string; colors: string[] }) {
+  return (
+    <div className="rounded-xl bg-aged-paper border border-desert-sand p-3">
+      <div className="flex gap-1 mb-2">
+        {colors.map((color, i) => (
+          <div
+            key={i}
+            className="w-6 h-6 rounded-full border border-desert-sand/50"
+            style={{ backgroundColor: color }}
+          />
+        ))}
+      </div>
+      <p className="text-sm font-medium text-charcoal">{name}</p>
     </div>
   );
 }

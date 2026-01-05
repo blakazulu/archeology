@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Box, Image, FileText, Palette, Download, Share2, Plus, ImageOff } from 'lucide-react';
 import { useState, useCallback, useMemo } from 'react';
 import { cn } from '@/lib/utils';
@@ -27,7 +27,11 @@ type Tab = '3d' | 'photos' | 'info' | 'colors';
 
 export function ArtifactDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const [activeTab, setActiveTab] = useState<Tab>('3d');
+  const [searchParams] = useSearchParams();
+
+  // Get initial tab from URL param (e.g., ?tab=colors for PastPalette flow)
+  const initialTab = (searchParams.get('tab') as Tab) || '3d';
+  const [activeTab, setActiveTab] = useState<Tab>(initialTab);
 
   // Load artifact data
   const { data, isLoading, error, refetch } = useArtifactData(id);
