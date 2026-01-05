@@ -128,7 +128,7 @@ export function FileUpload({
   }, []);
 
   return (
-    <div className={cn('fixed inset-0 z-50 bg-parchment', className)}>
+    <div className={cn('fixed inset-0 z-[100] bg-parchment', className)}>
       <div className="h-full flex flex-col">
         {/* Header */}
         <div className="p-4 border-b border-desert-sand safe-area-top">

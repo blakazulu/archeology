@@ -1,11 +1,11 @@
 {
-  "name": "Save The Past",
-  "short_name": "SavePast",
+  "name": "Relic AI",
+  "short_name": "Relic AI",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#8B4513",
   "background_color": "#FDF5E6",
-  "description": "Archaeological artifact documentation with 3D reconstruction and AI analysis",
+  "description": "AI-powered archaeological artifact documentation with 3D reconstruction, scholarly analysis, and historical colorization",
   "icons": [
     {
       "src": "/logo-32.png",

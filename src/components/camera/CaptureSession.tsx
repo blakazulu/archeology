@@ -147,7 +147,7 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
   // Show camera if capturing
   if (isCapturing) {
     return (
-      <div className="fixed inset-0 z-50">
+      <div className="fixed inset-0 z-[100]">
         <CameraView
           onCapture={handleCapture}
           onClose={handleCancel}
@@ -155,7 +155,7 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
 
         {/* Multi-mode angle indicator */}
         {!isSingleMode && (
-          <div className="fixed bottom-32 left-0 right-0 z-60 px-4">
+          <div className="fixed bottom-32 left-0 right-0 z-[110] px-4">
             <div className="bg-black/60 backdrop-blur-sm rounded-xl p-4 mx-auto max-w-sm">
               <div className="flex items-center justify-between mb-2">
                 <button
@@ -225,7 +225,7 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
 
   // Multi-mode gallery view (when not actively capturing)
   return (
-    <div className="fixed inset-0 z-50 bg-parchment">
+    <div className="fixed inset-0 z-[100] bg-parchment">
       <div className="h-full flex flex-col">
         {/* Header */}
         <div className="p-4 border-b border-desert-sand safe-area-top">

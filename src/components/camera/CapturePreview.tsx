@@ -31,7 +31,7 @@ export function CapturePreview({
   if (!imageUrl) return null;
 
   return (
-    <div className={cn('fixed inset-0 z-50 bg-black', className)}>
+    <div className={cn('fixed inset-0 z-[100] bg-black', className)}>
       {/* Preview image */}
       <img
         src={imageUrl}
