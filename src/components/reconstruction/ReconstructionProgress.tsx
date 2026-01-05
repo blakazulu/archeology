@@ -1,4 +1,5 @@
 import { X, Loader2, CheckCircle2, AlertCircle, Upload } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 export type ReconstructionStatus =
@@ -19,32 +20,32 @@ export interface ReconstructionProgressProps {
 
 const statusConfig: Record<ReconstructionStatus, {
   icon: typeof Loader2;
-  label: string;
+  labelKey: string;
   color: string;
 }> = {
   idle: {
     icon: Upload,
-    label: 'Ready to upload',
+    labelKey: 'components.reconstruction.progressLabels.idle',
     color: 'text-stone-gray',
   },
   uploading: {
     icon: Loader2,
-    label: 'Uploading images...',
+    labelKey: 'components.reconstruction.progressLabels.uploading',
     color: 'text-terracotta',
   },
   processing: {
     icon: Loader2,
-    label: 'Processing...',
+    labelKey: 'components.reconstruction.progressLabels.processing',
     color: 'text-desert-teal',
   },
   completed: {
     icon: CheckCircle2,
-    label: 'Complete',
+    labelKey: 'components.reconstruction.progressLabels.completed',
     color: 'text-oxidized-bronze',
   },
   error: {
     icon: AlertCircle,
-    label: 'Error',
+    labelKey: 'components.reconstruction.progressLabels.error',
     color: 'text-rust-red',
   },
 };
@@ -57,6 +58,7 @@ export function ReconstructionProgress({
   onCancel,
   className,
 }: ReconstructionProgressProps) {
+  const { t } = useTranslation();
   const config = statusConfig[status];
   const Icon = config.icon;
   const isAnimated = status === 'uploading' || status === 'processing';
@@ -78,7 +80,7 @@ export function ReconstructionProgress({
             )}
           />
           <span className={cn('font-medium text-sm', config.color)}>
-            {config.label}
+            {t(config.labelKey)}
           </span>
         </div>
 
@@ -86,10 +88,10 @@ export function ReconstructionProgress({
           <button
             onClick={onCancel}
             className="flex items-center gap-1 px-3 py-1.5 text-sm text-stone-gray hover:text-rust-red hover:bg-rust-red/10 rounded-lg transition-colors"
-            aria-label="Cancel reconstruction"
+            aria-label={t('components.reconstruction.cancelReconstruction')}
           >
             <X className="w-4 h-4" />
-            <span className="hidden sm:inline">Cancel</span>
+            <span className="hidden sm:inline">{t('components.reconstruction.cancel')}</span>
           </button>
         )}
       </div>
@@ -120,7 +122,7 @@ export function ReconstructionProgress({
       {/* Progress percentage */}
       <div className="flex items-center justify-between mt-2">
         <p className="text-stone-gray text-sm">
-          {statusMessage || getDefaultMessage(status, clampedProgress)}
+          {statusMessage || getDefaultMessage(status, clampedProgress, t)}
         </p>
         <span className="text-charcoal font-medium text-sm tabular-nums">
           {clampedProgress}%
@@ -142,7 +144,7 @@ export function ReconstructionProgress({
         <div className="mt-3 p-3 rounded-xl bg-oxidized-bronze/10 border border-oxidized-bronze/30">
           <div className="flex gap-2 text-sm text-oxidized-bronze">
             <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
-            <span>3D reconstruction complete! View your artifact model.</span>
+            <span>{t('components.reconstruction.successMessage')}</span>
           </div>
         </div>
       )}
@@ -150,26 +152,30 @@ export function ReconstructionProgress({
   );
 }
 
-function getDefaultMessage(status: ReconstructionStatus, progress: number): string {
+function getDefaultMessage(
+  status: ReconstructionStatus,
+  progress: number,
+  t: (key: string) => string
+): string {
   switch (status) {
     case 'idle':
-      return 'Select images to begin reconstruction';
+      return t('components.reconstruction.progressMessages.selectImages');
     case 'uploading':
-      return `Uploading images to server...`;
+      return t('components.reconstruction.progressMessages.uploadingToServer');
     case 'processing':
       if (progress < 30) {
-        return 'Analyzing image features...';
+        return t('components.reconstruction.progressMessages.analyzingFeatures');
       } else if (progress < 60) {
-        return 'Matching feature points...';
+        return t('components.reconstruction.progressMessages.matchingPoints');
       } else if (progress < 90) {
-        return 'Building 3D geometry...';
+        return t('components.reconstruction.progressMessages.buildingGeometry');
       } else {
-        return 'Finalizing reconstruction...';
+        return t('components.reconstruction.progressMessages.finalizingReconstruction');
       }
     case 'completed':
-      return 'Reconstruction finished successfully';
+      return t('components.reconstruction.progressMessages.reconstructionFinished');
     case 'error':
-      return 'An error occurred during reconstruction';
+      return t('components.reconstruction.progressMessages.errorOccurred');
     default:
       return '';
   }

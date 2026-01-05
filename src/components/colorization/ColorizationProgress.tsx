@@ -1,4 +1,5 @@
 import { X, Loader2, CheckCircle2, AlertCircle, Palette } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 export type ColorizationStatus =
@@ -18,27 +19,27 @@ export interface ColorizationProgressProps {
 
 const statusConfig: Record<ColorizationStatus, {
   icon: typeof Loader2;
-  label: string;
+  labelKey: string;
   color: string;
 }> = {
   idle: {
     icon: Palette,
-    label: 'Ready to colorize',
+    labelKey: 'components.colorization.progressLabels.idle',
     color: 'text-stone-gray',
   },
   processing: {
     icon: Loader2,
-    label: 'Generating colors...',
+    labelKey: 'components.colorization.progressLabels.processing',
     color: 'text-terracotta',
   },
   completed: {
     icon: CheckCircle2,
-    label: 'Complete',
+    labelKey: 'components.colorization.progressLabels.completed',
     color: 'text-oxidized-bronze',
   },
   error: {
     icon: AlertCircle,
-    label: 'Error',
+    labelKey: 'components.colorization.progressLabels.error',
     color: 'text-rust-red',
   },
 };
@@ -51,6 +52,7 @@ export function ColorizationProgress({
   onCancel,
   className,
 }: ColorizationProgressProps) {
+  const { t } = useTranslation();
   const config = statusConfig[status];
   const Icon = config.icon;
   const isAnimated = status === 'processing';
@@ -72,7 +74,7 @@ export function ColorizationProgress({
             )}
           />
           <span className={cn('font-medium text-sm', config.color)}>
-            {config.label}
+            {t(config.labelKey)}
           </span>
         </div>
 
@@ -80,10 +82,10 @@ export function ColorizationProgress({
           <button
             onClick={onCancel}
             className="flex items-center gap-1 px-3 py-1.5 text-sm text-stone-gray hover:text-rust-red hover:bg-rust-red/10 rounded-lg transition-colors"
-            aria-label="Cancel colorization"
+            aria-label={t('components.colorization.cancelColorization')}
           >
             <X className="w-4 h-4" />
-            <span className="hidden sm:inline">Cancel</span>
+            <span className="hidden sm:inline">{t('components.colorization.cancel')}</span>
           </button>
         )}
       </div>
@@ -113,7 +115,7 @@ export function ColorizationProgress({
       {/* Progress percentage */}
       <div className="flex items-center justify-between mt-2">
         <p className="text-stone-gray text-sm">
-          {statusMessage || getDefaultMessage(status, clampedProgress)}
+          {statusMessage || getDefaultMessage(status, clampedProgress, t)}
         </p>
         <span className="text-charcoal font-medium text-sm tabular-nums">
           {clampedProgress}%
@@ -135,7 +137,7 @@ export function ColorizationProgress({
         <div className="mt-3 p-3 rounded-xl bg-oxidized-bronze/10 border border-oxidized-bronze/30">
           <div className="flex gap-2 text-sm text-oxidized-bronze">
             <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
-            <span>Colorization complete! View your restored artifact.</span>
+            <span>{t('components.colorization.successMessage')}</span>
           </div>
         </div>
       )}
@@ -143,24 +145,28 @@ export function ColorizationProgress({
   );
 }
 
-function getDefaultMessage(status: ColorizationStatus, progress: number): string {
+function getDefaultMessage(
+  status: ColorizationStatus,
+  progress: number,
+  t: (key: string) => string
+): string {
   switch (status) {
     case 'idle':
-      return 'Select a color scheme to begin';
+      return t('components.colorization.progressMessages.selectScheme');
     case 'processing':
       if (progress < 30) {
-        return 'Analyzing artifact surfaces...';
+        return t('components.colorization.progressMessages.analyzingSurfaces');
       } else if (progress < 60) {
-        return 'Applying color scheme...';
+        return t('components.colorization.progressMessages.applyingScheme');
       } else if (progress < 90) {
-        return 'Refining color details...';
+        return t('components.colorization.progressMessages.refiningDetails');
       } else {
-        return 'Finalizing colorization...';
+        return t('components.colorization.progressMessages.finalizingColorization');
       }
     case 'completed':
-      return 'Colorization finished successfully';
+      return t('components.colorization.progressMessages.colorizationFinished');
     case 'error':
-      return 'An error occurred during colorization';
+      return t('components.colorization.progressMessages.errorOccurred');
     default:
       return '';
   }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Image, Images, Zap, Target, Clock, CheckCircle2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 export type ReconstructionMethod = 'single' | 'multi';
@@ -13,33 +14,33 @@ export interface MethodSelectorProps {
 
 interface MethodOption {
   id: ReconstructionMethod;
-  name: string;
-  description: string;
+  nameKey: string;
+  descriptionKey: string;
   icon: typeof Image;
-  features: { icon: typeof Zap; label: string }[];
+  features: { icon: typeof Zap; labelKey: string }[];
   recommended?: boolean;
 }
 
-const methodOptions: MethodOption[] = [
+const methodOptionsConfig: MethodOption[] = [
   {
     id: 'single',
-    name: 'Quick Capture',
-    description: 'Fast 3D estimation from a single image',
+    nameKey: 'components.reconstruction.quickCapture',
+    descriptionKey: 'components.reconstruction.quickCaptureDesc',
     icon: Image,
     features: [
-      { icon: Zap, label: 'Fast processing' },
-      { icon: Clock, label: '~30 seconds' },
+      { icon: Zap, labelKey: 'components.reconstruction.fastProcessing' },
+      { icon: Clock, labelKey: 'components.reconstruction.time30sec' },
     ],
   },
   {
     id: 'multi',
-    name: 'Full Reconstruction',
-    description: 'Detailed 3D model from multiple angles',
+    nameKey: 'components.reconstruction.fullReconstruction',
+    descriptionKey: 'components.reconstruction.fullReconstructionDesc',
     icon: Images,
     recommended: true,
     features: [
-      { icon: Target, label: 'High accuracy' },
-      { icon: Clock, label: '2-5 minutes' },
+      { icon: Target, labelKey: 'components.reconstruction.highAccuracy' },
+      { icon: Clock, labelKey: 'components.reconstruction.time2to5min' },
     ],
   },
 ];
@@ -50,16 +51,17 @@ export function MethodSelector({
   disabled = false,
   className,
 }: MethodSelectorProps) {
+  const { t } = useTranslation();
   const [hoveredMethod, setHoveredMethod] = useState<ReconstructionMethod | null>(null);
 
   return (
     <div className={cn('w-full', className)}>
       <label className="block font-heading text-sm font-semibold text-charcoal mb-3">
-        Reconstruction Method
+        {t('components.reconstruction.reconstructionMethod')}
       </label>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {methodOptions.map((option) => {
+        {methodOptionsConfig.map((option) => {
           const isSelected = value === option.id;
           const isHovered = hoveredMethod === option.id;
           const Icon = option.icon;
@@ -73,7 +75,7 @@ export function MethodSelector({
               onMouseLeave={() => setHoveredMethod(null)}
               disabled={disabled}
               className={cn(
-                'relative p-4 rounded-xl border-2 text-left transition-all',
+                'relative p-4 rounded-xl border-2 text-left rtl:text-right transition-all',
                 'focus:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2',
                 isSelected
                   ? 'border-terracotta bg-terracotta/5'
@@ -85,15 +87,15 @@ export function MethodSelector({
             >
               {/* Recommended badge */}
               {option.recommended && (
-                <span className="absolute -top-2 right-3 px-2 py-0.5 text-xs font-medium bg-oxidized-bronze text-bone-white rounded-full">
-                  Recommended
+                <span className="absolute -top-2 right-3 rtl:right-auto rtl:left-3 px-2 py-0.5 text-xs font-medium bg-oxidized-bronze text-bone-white rounded-full">
+                  {t('components.reconstruction.recommendedBadge')}
                 </span>
               )}
 
               {/* Selection indicator */}
               <div
                 className={cn(
-                  'absolute top-3 right-3 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors',
+                  'absolute top-3 right-3 rtl:right-auto rtl:left-3 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors',
                   isSelected
                     ? 'border-terracotta bg-terracotta'
                     : 'border-desert-sand bg-transparent'
@@ -126,9 +128,9 @@ export function MethodSelector({
                   isSelected ? 'text-terracotta' : 'text-charcoal'
                 )}
               >
-                {option.name}
+                {t(option.nameKey)}
               </h3>
-              <p className="text-stone-gray text-sm mb-3">{option.description}</p>
+              <p className="text-stone-gray text-sm mb-3">{t(option.descriptionKey)}</p>
 
               {/* Features */}
               <div className="flex flex-wrap gap-2">
@@ -140,7 +142,7 @@ export function MethodSelector({
                       className="inline-flex items-center gap-1 text-xs text-stone-gray bg-desert-sand/30 px-2 py-1 rounded-full"
                     >
                       <FeatureIcon className="w-3 h-3" />
-                      {feature.label}
+                      {t(feature.labelKey)}
                     </span>
                   );
                 })}
@@ -153,8 +155,8 @@ export function MethodSelector({
       {/* Helper text */}
       <p className="mt-3 text-xs text-stone-gray">
         {value === 'single'
-          ? 'Quick capture uses AI to estimate 3D structure from a single photo. Best for quick documentation.'
-          : 'Full reconstruction creates detailed 3D models using photogrammetry. Requires 8-20 photos from different angles.'}
+          ? t('components.reconstruction.quickCaptureHelp')
+          : t('components.reconstruction.fullReconstructionHelp')}
       </p>
     </div>
   );

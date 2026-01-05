@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { Box, ChevronRight, RotateCcw } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { MethodSelector, type ReconstructionMethod } from './MethodSelector';
 import {
@@ -48,6 +49,7 @@ export function ReconstructionCard({
   imageCount = 0,
   className,
 }: ReconstructionCardProps) {
+  const { t } = useTranslation();
   const isIdle = status === 'idle';
   const isProcessing = status === 'uploading' || status === 'processing';
   const isCompleted = status === 'completed';
@@ -62,16 +64,16 @@ export function ReconstructionCard({
   // Get start button text based on state
   const getStartButtonText = useCallback(() => {
     if (selectedMethod === 'single') {
-      return imageCount > 0 ? 'Start Quick Capture' : 'Select an image';
+      return imageCount > 0 ? t('components.reconstruction.startQuickCapture') : t('components.reconstruction.selectImage');
     }
     if (imageCount === 0) {
-      return 'Select images';
+      return t('components.reconstruction.selectImages');
     }
     if (imageCount < 3) {
-      return `Need ${3 - imageCount} more image${3 - imageCount > 1 ? 's' : ''}`;
+      return t('components.reconstruction.needMore', { count: 3 - imageCount });
     }
-    return `Start Reconstruction (${imageCount} images)`;
-  }, [selectedMethod, imageCount]);
+    return t('components.reconstruction.startReconstruction', { count: imageCount });
+  }, [selectedMethod, imageCount, t]);
 
   return (
     <div
@@ -88,10 +90,10 @@ export function ReconstructionCard({
           </div>
           <div>
             <h2 className="font-heading text-lg font-semibold text-charcoal">
-              3D Reconstruction
+              {t('components.reconstruction.title')}
             </h2>
             <p className="text-stone-gray text-sm">
-              Create a 3D model from your artifact photos
+              {t('components.reconstruction.subtitle')}
             </p>
           </div>
         </div>
@@ -122,14 +124,14 @@ export function ReconstructionCard({
         {/* Image count indicator when idle */}
         {isIdle && (
           <div className="flex items-center justify-between p-3 rounded-xl bg-aged-paper">
-            <span className="text-sm text-stone-gray">Images selected</span>
+            <span className="text-sm text-stone-gray">{t('components.reconstruction.imagesSelected')}</span>
             <span
               className={cn(
                 'font-medium text-sm',
                 imageCount > 0 ? 'text-charcoal' : 'text-stone-gray'
               )}
             >
-              {imageCount} {selectedMethod === 'multi' && '/ 8-20 recommended'}
+              {imageCount} {selectedMethod === 'multi' && t('components.reconstruction.recommended')}
             </span>
           </div>
         )}
@@ -150,7 +152,7 @@ export function ReconstructionCard({
             )}
           >
             {getStartButtonText()}
-            {canStart && <ChevronRight className="w-5 h-5" />}
+            {canStart && <ChevronRight className="w-5 h-5 rtl:rotate-180" />}
           </button>
         )}
 
@@ -160,7 +162,7 @@ export function ReconstructionCard({
             className="w-full py-3.5 px-4 rounded-xl font-medium bg-terracotta text-bone-white hover:bg-clay active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           >
             <RotateCcw className="w-5 h-5" />
-            Try Again
+            {t('components.reconstruction.tryAgain')}
           </button>
         )}
 
@@ -169,14 +171,14 @@ export function ReconstructionCard({
             onClick={onViewResult}
             className="w-full py-3.5 px-4 rounded-xl font-medium bg-oxidized-bronze text-bone-white hover:bg-oxidized-bronze/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           >
-            View 3D Model
-            <ChevronRight className="w-5 h-5" />
+            {t('components.reconstruction.view3DModel')}
+            <ChevronRight className="w-5 h-5 rtl:rotate-180" />
           </button>
         )}
 
         {isProcessing && (
           <p className="text-center text-sm text-stone-gray">
-            Please don&apos;t close this page while processing...
+            {t('components.reconstruction.dontClosePage')}
           </p>
         )}
       </div>

@@ -1,4 +1,5 @@
 import { Palette, Wand2, X, RotateCcw, ChevronRight, AlertCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import type { ColorScheme } from '@/types/artifact';
 import { ColorSchemeSelector } from './ColorSchemeSelector';
@@ -54,6 +55,7 @@ export function ColorizationCard({
   hasModel = false,
   className,
 }: ColorizationCardProps) {
+  const { t } = useTranslation();
   const isIdle = status === 'idle';
   const isProcessing = status === 'processing';
   const isCompleted = status === 'completed';
@@ -68,12 +70,12 @@ export function ColorizationCard({
   // Get button text based on state
   const getButtonText = () => {
     if (!hasModel) {
-      return 'Load a 3D model first';
+      return t('components.colorization.loadModelFirst');
     }
     if (selectedScheme === 'custom' && !customPrompt.trim()) {
-      return 'Enter a custom prompt';
+      return t('components.colorization.enterCustomPrompt');
     }
-    return 'Generate Colors';
+    return t('components.colorization.generateColors');
   };
 
   return (
@@ -91,10 +93,10 @@ export function ColorizationCard({
           </div>
           <div>
             <h2 className="font-heading text-lg font-semibold text-charcoal">
-              PastPalette Colorization
+              {t('components.colorization.title')}
             </h2>
             <p className="text-stone-gray text-sm">
-              Restore original colors to your artifact
+              {t('components.colorization.subtitle')}
             </p>
           </div>
         </div>
@@ -129,7 +131,7 @@ export function ColorizationCard({
           <div className="flex items-center gap-2 p-3 rounded-xl bg-rust-red/10 border border-rust-red/30">
             <AlertCircle className="w-4 h-4 text-rust-red shrink-0" />
             <span className="text-sm text-rust-red">
-              Please create or load a 3D model before colorizing
+              {t('components.colorization.loadModelWarning')}
             </span>
           </div>
         )}
@@ -137,7 +139,7 @@ export function ColorizationCard({
         {/* Selected scheme indicator when idle and has model */}
         {isIdle && hasModel && (
           <div className="flex items-center justify-between p-3 rounded-xl bg-aged-paper">
-            <span className="text-sm text-stone-gray">Selected scheme</span>
+            <span className="text-sm text-stone-gray">{t('components.colorization.selectedScheme')}</span>
             <span className="font-medium text-sm text-charcoal capitalize">
               {selectedScheme}
             </span>
@@ -170,7 +172,7 @@ export function ColorizationCard({
             className="w-full py-3.5 px-4 rounded-xl font-medium border-2 border-stone-gray/30 text-stone-gray hover:border-rust-red hover:text-rust-red hover:bg-rust-red/10 transition-all flex items-center justify-center gap-2"
           >
             <X className="w-5 h-5" />
-            Cancel Generation
+            {t('components.colorization.cancelGeneration')}
           </button>
         )}
 
@@ -180,7 +182,7 @@ export function ColorizationCard({
             className="w-full py-3.5 px-4 rounded-xl font-medium bg-terracotta text-bone-white hover:bg-clay active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           >
             <RotateCcw className="w-5 h-5" />
-            Try Again
+            {t('components.colorization.tryAgain')}
           </button>
         )}
 
@@ -189,14 +191,14 @@ export function ColorizationCard({
             onClick={onViewResult}
             className="w-full py-3.5 px-4 rounded-xl font-medium bg-oxidized-bronze text-bone-white hover:bg-oxidized-bronze/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           >
-            View Colorized Model
-            <ChevronRight className="w-5 h-5" />
+            {t('components.colorization.viewColorizedModel')}
+            <ChevronRight className="w-5 h-5 rtl:rotate-180" />
           </button>
         )}
 
         {isProcessing && (
           <p className="mt-3 text-center text-sm text-stone-gray">
-            Please don&apos;t close this page while processing...
+            {t('components.colorization.dontClosePage')}
           </p>
         )}
       </div>
