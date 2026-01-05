@@ -7,8 +7,8 @@
 
 import * as ort from 'onnxruntime-web';
 
-// Model configuration
-const MODEL_URL = 'https://cdn.glitch.me/54ac5a99-01c1-4fd0-a7c4-a020ed26b88c/deoldify-quant.onnx';
+// Model configuration - quantized DeOldify model (~61MB)
+const MODEL_URL = 'https://cdn.glitch.me/2046b88b-673a-457f-b1b8-7169ce9bf13a/deoldify-quant.onnx';
 const MODEL_INPUT_SIZE = 256;
 
 // Singleton session for reuse
