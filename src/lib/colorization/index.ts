@@ -50,8 +50,8 @@ async function loadModel(onProgress?: ColorizeProgressCallback): Promise<ort.Inf
   onProgress?.(5, 'Loading AI model...');
 
   try {
-    // Configure ONNX Runtime for browser
-    ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.0/dist/';
+    // ONNX Runtime will use bundled WASM files from node_modules
+    // No need to set wasmPaths - Vite handles this
 
     onProgress?.(10, 'Downloading model (~61MB)...');
 
