@@ -12,6 +12,7 @@ import {
   AlertCircle,
   CheckCircle2,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { useGeoLocation, formatCoordinates, formatAccuracy } from '@/hooks/useGeoLocation';
 import type { ArtifactMetadata } from '@/types';
@@ -22,9 +23,9 @@ import type { ArtifactMetadata } from '@/types';
 const FIELD_TEMPLATES = [
   {
     id: 'excavation',
-    name: 'Excavation Site',
+    nameKey: 'excavationSite',
     icon: Layers,
-    description: 'Standard excavation context',
+    descKey: 'excavationSiteDesc',
     defaults: {
       excavationLayer: 'Layer ',
       notes: 'Found during systematic excavation. ',
@@ -32,9 +33,9 @@ const FIELD_TEMPLATES = [
   },
   {
     id: 'survey',
-    name: 'Field Survey',
+    nameKey: 'fieldSurvey',
     icon: MapPin,
-    description: 'Surface collection during survey',
+    descKey: 'fieldSurveyDesc',
     defaults: {
       excavationLayer: 'Surface find',
       notes: 'Collected during pedestrian survey. ',
@@ -42,9 +43,9 @@ const FIELD_TEMPLATES = [
   },
   {
     id: 'rescue',
-    name: 'Rescue Archaeology',
+    nameKey: 'rescueArchaeology',
     icon: AlertCircle,
-    description: 'Emergency/salvage excavation',
+    descKey: 'rescueArchaeologyDesc',
     defaults: {
       excavationLayer: 'Disturbed context',
       notes: 'Rescue excavation - limited time for documentation. ',
@@ -69,6 +70,8 @@ export function MetadataForm({
   disabled = false,
   compact = false,
 }: MetadataFormProps) {
+  const { t } = useTranslation();
+
   // Form state
   const [metadata, setMetadata] = useState<ArtifactMetadata>({
     discoveryLocation: initialValues.discoveryLocation || '',
@@ -175,7 +178,7 @@ export function MetadataForm({
           onClick={() => setIsExpanded(!isExpanded)}
           className="w-full flex items-center justify-between p-3 rounded-lg bg-aged-paper hover:bg-desert-sand/20 transition-colors"
         >
-          <span className="font-medium text-charcoal">Additional Context (Optional)</span>
+          <span className="font-medium text-charcoal">{t('components.infoCard.metadataForm.additionalContext')}</span>
           {isExpanded ? (
             <ChevronUp className="h-5 w-5 text-stone-gray" />
           ) : (
@@ -190,7 +193,7 @@ export function MetadataForm({
           {/* Quick Templates */}
           <div>
             <label className="text-xs font-medium text-stone-gray uppercase tracking-wide mb-2 block">
-              Quick Templates
+              {t('components.infoCard.metadataForm.quickTemplates')}
             </label>
             <div className="flex flex-wrap gap-2">
               {FIELD_TEMPLATES.map((template) => (
@@ -201,7 +204,7 @@ export function MetadataForm({
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-aged-paper border border-desert-sand text-sm text-charcoal hover:bg-desert-sand/50 transition-colors"
                 >
                   <template.icon className="h-3.5 w-3.5" />
-                  {template.name}
+                  {t(`components.infoCard.metadataForm.templates.${template.nameKey}`)}
                 </button>
               ))}
             </div>
@@ -211,13 +214,13 @@ export function MetadataForm({
           <div>
             <label className="text-xs font-medium text-stone-gray uppercase tracking-wide mb-1.5 block">
               <MapPinned className="h-3.5 w-3.5 inline mr-1" />
-              Site Name
+              {t('components.infoCard.metadataForm.siteName')}
             </label>
             <input
               type="text"
               value={metadata.siteName || ''}
               onChange={(e) => updateField('siteName', e.target.value)}
-              placeholder="e.g., Tel Megiddo, Pompeii"
+              placeholder={t('components.infoCard.metadataForm.siteNamePlaceholder')}
               className="w-full px-3 py-2.5 rounded-lg border border-desert-sand bg-bone-white text-charcoal placeholder:text-stone-gray/50 focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
             />
           </div>
@@ -226,13 +229,13 @@ export function MetadataForm({
           <div>
             <label className="text-xs font-medium text-stone-gray uppercase tracking-wide mb-1.5 block">
               <MapPin className="h-3.5 w-3.5 inline mr-1" />
-              Discovery Location
+              {t('components.infoCard.metadataForm.discoveryLocation')}
             </label>
             <input
               type="text"
               value={metadata.discoveryLocation || ''}
               onChange={(e) => updateField('discoveryLocation', e.target.value)}
-              placeholder="e.g., Trench A, Grid Square B4"
+              placeholder={t('components.infoCard.metadataForm.discoveryLocationPlaceholder')}
               className="w-full px-3 py-2.5 rounded-lg border border-desert-sand bg-bone-white text-charcoal placeholder:text-stone-gray/50 focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
             />
           </div>
@@ -241,13 +244,13 @@ export function MetadataForm({
           <div>
             <label className="text-xs font-medium text-stone-gray uppercase tracking-wide mb-1.5 block">
               <Layers className="h-3.5 w-3.5 inline mr-1" />
-              Excavation Layer / Context
+              {t('components.infoCard.metadataForm.excavationLayer')}
             </label>
             <input
               type="text"
               value={metadata.excavationLayer || ''}
               onChange={(e) => updateField('excavationLayer', e.target.value)}
-              placeholder="e.g., Layer III, Context 1042, Stratum B"
+              placeholder={t('components.infoCard.metadataForm.excavationLayerPlaceholder')}
               className="w-full px-3 py-2.5 rounded-lg border border-desert-sand bg-bone-white text-charcoal placeholder:text-stone-gray/50 focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
             />
           </div>
@@ -256,7 +259,7 @@ export function MetadataForm({
           <div>
             <label className="text-xs font-medium text-stone-gray uppercase tracking-wide mb-1.5 block">
               <Calendar className="h-3.5 w-3.5 inline mr-1" />
-              Date Found
+              {t('components.infoCard.metadataForm.dateFound')}
             </label>
             <input
               type="date"
@@ -270,7 +273,7 @@ export function MetadataForm({
           <div>
             <label className="text-xs font-medium text-stone-gray uppercase tracking-wide mb-1.5 block">
               <Navigation className="h-3.5 w-3.5 inline mr-1" />
-              GPS Coordinates
+              {t('components.infoCard.metadataForm.gpsCoordinates')}
             </label>
 
             {currentCoords ? (
@@ -279,7 +282,7 @@ export function MetadataForm({
                   <div>
                     <div className="flex items-center gap-2 text-oxidized-bronze">
                       <CheckCircle2 className="h-4 w-4" />
-                      <span className="text-sm font-medium">Location captured</span>
+                      <span className="text-sm font-medium">{t('components.infoCard.metadataForm.locationCaptured')}</span>
                     </div>
                     <p className="text-sm text-charcoal mt-1 font-mono">
                       {formatCoordinates(currentCoords)}
@@ -293,7 +296,7 @@ export function MetadataForm({
                     onClick={handleClearGPS}
                     className="text-xs text-rust-red hover:text-rust-red/80"
                   >
-                    Clear
+                    {t('components.infoCard.metadataForm.clear')}
                   </button>
                 </div>
               </div>
@@ -301,12 +304,12 @@ export function MetadataForm({
               <div className="rounded-lg border border-desert-sand bg-aged-paper p-3">
                 {!isGeoSupported ? (
                   <p className="text-sm text-stone-gray">
-                    GPS is not available in this browser
+                    {t('components.infoCard.metadataForm.gpsNotAvailable')}
                   </p>
                 ) : geoState === 'denied' ? (
                   <div className="text-sm text-rust-red">
                     <AlertCircle className="h-4 w-4 inline mr-1" />
-                    Location permission denied. Enable in browser settings.
+                    {t('components.infoCard.metadataForm.locationDenied')}
                   </div>
                 ) : geoError ? (
                   <div className="text-sm text-rust-red">
@@ -323,12 +326,12 @@ export function MetadataForm({
                     {isGeoLoading ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        Getting location...
+                        {t('components.infoCard.metadataForm.gettingLocation')}
                       </>
                     ) : (
                       <>
                         <Navigation className="h-4 w-4" />
-                        Capture GPS Location
+                        {t('components.infoCard.metadataForm.captureGpsLocation')}
                       </>
                     )}
                   </button>
@@ -341,12 +344,12 @@ export function MetadataForm({
           <div>
             <label className="text-xs font-medium text-stone-gray uppercase tracking-wide mb-1.5 block">
               <StickyNote className="h-3.5 w-3.5 inline mr-1" />
-              Additional Notes
+              {t('components.infoCard.metadataForm.additionalNotes')}
             </label>
             <textarea
               value={metadata.notes || ''}
               onChange={(e) => updateField('notes', e.target.value)}
-              placeholder="Any additional observations, context, or details..."
+              placeholder={t('components.infoCard.metadataForm.notesPlaceholder')}
               rows={3}
               className="w-full px-3 py-2.5 rounded-lg border border-desert-sand bg-bone-white text-charcoal placeholder:text-stone-gray/50 focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta resize-none"
             />

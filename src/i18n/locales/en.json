@@ -7,7 +7,9 @@
     "home": "Home",
     "capture": "Capture",
     "gallery": "Gallery",
-    "settings": "Settings"
+    "settings": "Settings",
+    "save": "Save",
+    "palette": "Palette"
   },
   "pages": {
     "home": {
@@ -86,6 +88,20 @@
         "top": "Capture from above",
         "detail": "Capture any important details (optional)"
       }
+    },
+    "save": {
+      "galleryTitle": "3D Artifacts",
+      "gallerySubtitle": "Your documented artifacts",
+      "viewGallery": "View 3D Gallery",
+      "viewGalleryDesc": "Browse your reconstructed artifacts",
+      "newCapture": "New Capture"
+    },
+    "palette": {
+      "galleryTitle": "Colorized Artifacts",
+      "gallerySubtitle": "Your color restorations",
+      "viewGallery": "View Color Gallery",
+      "viewGalleryDesc": "Browse your colorized artifacts",
+      "newCapture": "New Color"
     },
     "gallery": {
       "title": "My Artifacts",
@@ -245,6 +261,8 @@
       "customPlaceholder": "Describe the colors you want (e.g., 'Deep ocean blues with coral pink accents and sandy beige')",
       "customHelp": "Be descriptive about the colors, materials, and overall aesthetic you envision.",
       "successMessage": "Colorization complete! View your restored artifact.",
+      "speculativeReconstruction": "Speculative Reconstruction",
+      "speculativeDescription": "This color reconstruction is AI-generated and represents a speculative interpretation of how the artifact may have appeared. It should not be considered historically accurate without expert validation.",
       "progressLabels": {
         "idle": "Ready to colorize",
         "processing": "Generating colors...",
@@ -274,7 +292,33 @@
         "original": "Original",
         "originalDesc": "Vibrant original colors",
         "custom": "Custom",
-        "customDesc": "Your own prompt"
+        "customDesc": "Your own prompt",
+        "unknown": "Unknown"
+      },
+      "variant": {
+        "deleteConfirmTitle": "Delete this variant?",
+        "deleteVariantTitle": "Delete Color Variant?",
+        "deleteConfirmMessage": "Are you sure you want to delete this",
+        "deleteWarning": "This action cannot be undone.",
+        "deleting": "Deleting...",
+        "colorVariant": "Color Variant",
+        "aiPrefix": "AI: ",
+        "original": "Original",
+        "originalImage": "Original Image",
+        "noColorVariants": "No Color Variants",
+        "before": "Before",
+        "after": "After"
+      },
+      "export": {
+        "exportColorVariants": "Export Color Variants",
+        "noVariantsAvailable": "No color variants available to export.",
+        "selectAll": "Select All ({{count}} variants)",
+        "includeMetadataTitle": "Include Metadata",
+        "includeMetadata": "Add JSON file with color schemes, prompts, and AI model info",
+        "exporting": "Exporting...",
+        "exported": "Exported!",
+        "downloadZip": "Download ZIP",
+        "download": "Download"
       },
       "status": {
         "converting": "Converting image...",
@@ -313,6 +357,95 @@
         "saving": "Saving to database...",
         "finishing": "Finishing up...",
         "complete": "Info card generated!"
+      },
+      "display": {
+        "aiAnalysis": "AI Analysis",
+        "edit": "Edit",
+        "editedByArchaeologist": "Edited by archaeologist",
+        "material": "Material",
+        "estimatedAge": "Estimated Age",
+        "confidence": "confidence",
+        "confidenceHigh": "High confidence",
+        "confidenceMedium": "Medium confidence",
+        "confidenceLow": "Low confidence",
+        "possibleUse": "Possible Use",
+        "culturalContext": "Cultural Context",
+        "similarArtifacts": "Similar Artifacts",
+        "preservationNotes": "Preservation Notes",
+        "aiDisclaimer": "AI Disclaimer",
+        "model": "Model",
+        "generated": "Generated"
+      },
+      "editor": {
+        "editInfoCard": "Edit Info Card",
+        "resetToOriginal": "Reset to original",
+        "material": "Material",
+        "estimatedAge": "Estimated Age",
+        "confidenceLevel": "Confidence Level",
+        "reasoningOptional": "Reasoning (optional)",
+        "reasoningPlaceholder": "Explain the dating reasoning...",
+        "possibleUse": "Possible Use",
+        "culturalContext": "Cultural Context",
+        "similarArtifacts": "Similar Artifacts",
+        "addSimilarArtifact": "Add similar artifact...",
+        "preservationNotes": "Preservation Notes",
+        "saving": "Saving...",
+        "saveChanges": "Save Changes",
+        "failedToSave": "Failed to save info card"
+      },
+      "export": {
+        "exportInfoCard": "Export Info Card",
+        "chooseFormat": "Choose an export format:",
+        "pdfReport": "PDF Report",
+        "pdfDesc": "Printable report with all artifact details",
+        "jsonData": "JSON Data",
+        "jsonDesc": "Structured data for databases or integration",
+        "copyToClipboard": "Copy to Clipboard",
+        "copyDesc": "Plain text summary for sharing",
+        "cancel": "Cancel",
+        "failedToExportPdf": "Failed to export PDF. Please try again.",
+        "failedToExportJson": "Failed to export JSON. Please try again.",
+        "failedToCopy": "Failed to copy to clipboard",
+        "reportTitle": "Archaeological Artifact Report",
+        "discoveryContext": "Discovery Context",
+        "site": "Site",
+        "location": "Location",
+        "layer": "Layer",
+        "aiNote": "Note: This analysis was AI-generated and should be verified by qualified archaeologists.",
+        "generatedWith": "Generated with Save The Past"
+      },
+      "metadataForm": {
+        "additionalContext": "Additional Context (Optional)",
+        "quickTemplates": "Quick Templates",
+        "siteName": "Site Name",
+        "siteNamePlaceholder": "e.g., Tel Megiddo, Pompeii",
+        "discoveryLocation": "Discovery Location",
+        "discoveryLocationPlaceholder": "e.g., Trench A, Grid Square B4",
+        "excavationLayer": "Excavation Layer / Context",
+        "excavationLayerPlaceholder": "e.g., Layer III, Context 1042, Stratum B",
+        "dateFound": "Date Found",
+        "gpsCoordinates": "GPS Coordinates",
+        "locationCaptured": "Location captured",
+        "clear": "Clear",
+        "gpsNotAvailable": "GPS is not available in this browser",
+        "locationDenied": "Location permission denied. Enable in browser settings.",
+        "captureGpsLocation": "Capture GPS Location",
+        "gettingLocation": "Getting location...",
+        "additionalNotes": "Additional Notes",
+        "notesPlaceholder": "Any additional observations, context, or details...",
+        "templates": {
+          "excavationSite": "Excavation Site",
+          "excavationSiteDesc": "Standard excavation context",
+          "fieldSurvey": "Field Survey",
+          "fieldSurveyDesc": "Surface collection during survey",
+          "rescueArchaeology": "Rescue Archaeology",
+          "rescueArchaeologyDesc": "Emergency/salvage excavation"
+        }
+      },
+      "confidenceLevels": {
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
       }
     },
     "modelViewer": {
@@ -323,6 +456,7 @@
       "multiImage": "Multi-Image",
       "created": "Created",
       "size": "Size",
+      "aiModel": "AI Model",
       "unknown": "Unknown",
       "download3DModel": "Download 3D Model",
       "notSatisfied": "Not satisfied with the result? You can regenerate the 3D model.",
@@ -331,7 +465,52 @@
     "fileUpload": {
       "invalidType": "Invalid file type. Accepted: JPEG, PNG, WebP, HEIC",
       "fileTooLarge": "File too large ({{size}}MB). Max: {{max}}MB",
-      "maxFilesReached": "Can only add {{count}} more file(s). Max: {{max}}"
+      "maxFilesReached": "Can only add {{count}} more file(s). Max: {{max}}",
+      "cancel": "Cancel",
+      "uploadPhotos": "Upload Photos",
+      "continue": "Continue",
+      "dragAndDrop": "Drag & drop photos here",
+      "orTapToBrowse": "or tap to browse files",
+      "acceptedFormats": "JPEG, PNG, WebP, HEIC up to {{maxSize}}MB",
+      "selectedPhotos": "Selected Photos ({{count}}/{{max}})",
+      "removePhoto": "Remove photo"
+    },
+    "camera": {
+      "accessDenied": "Camera Access Denied",
+      "accessDeniedDesc": "Please allow camera access in your browser settings to capture artifact photos.",
+      "notSupported": "Camera Not Supported",
+      "notSupportedDesc": "Your browser doesn't support camera access. Please try using a modern browser like Chrome, Safari, or Firefox.",
+      "error": "Camera Error",
+      "errorDesc": "An error occurred while accessing the camera.",
+      "tryAgain": "Try Again",
+      "cancel": "Cancel",
+      "goBack": "Go Back",
+      "startingCamera": "Starting camera...",
+      "closeCamera": "Close camera",
+      "switchCamera": "Switch camera",
+      "capturePhoto": "Capture photo",
+      "frontCamera": "Front Camera",
+      "backCamera": "Back Camera"
+    },
+    "captureSession": {
+      "captured": "captured",
+      "done": "Done",
+      "cancel": "Cancel",
+      "capturedPhotos": "Captured Photos",
+      "addPhoto": "Add Photo",
+      "photosCount": "{{count}} / {{total}} photos",
+      "minimumPhotos": "Minimum {{count}} photos required"
+    },
+    "capturePreview": {
+      "preview": "Preview",
+      "discardPhoto": "Discard photo",
+      "retakePhoto": "Retake photo",
+      "useThisPhoto": "Use this photo",
+      "tapToUse": "Tap the checkmark to use this photo",
+      "capturedArtifact": "Captured artifact"
+    },
+    "captureOverlay": {
+      "centerArtifact": "Center the artifact in the frame"
     },
     "deleteDialog": {
       "title": "Delete Artifact?",
@@ -363,6 +542,24 @@
     },
     "loadingScreen": {
       "loading": "Loading..."
+    },
+    "queueIndicator": {
+      "pendingOperation": "{{count}} Pending Operation",
+      "pendingOperations": "{{count}} Pending Operations",
+      "clickToProcess": "Click to process",
+      "waitingForConnection": "Waiting for connection",
+      "processing": "Processing...",
+      "processNow": "Process Now",
+      "operations": {
+        "3dReconstruction": "3D Reconstruction",
+        "infoCardGeneration": "Info Card Generation",
+        "colorization": "Colorization",
+        "unknown": "Unknown Operation"
+      }
+    },
+    "languageSelector": {
+      "switchToHebrew": "Switch to Hebrew",
+      "switchToEnglish": "Switch to English"
     }
   },
   "common": {
@@ -375,7 +572,9 @@
       "back": "Back",
       "next": "Next",
       "done": "Done",
-      "retry": "Retry"
+      "retry": "Retry",
+      "copy": "Copy",
+      "export": "Export"
     },
     "status": {
       "draft": "Draft",
@@ -392,7 +591,9 @@
       "networkError": "Network error"
     },
     "labels": {
-      "loading": "Loading..."
+      "loading": "Loading...",
+      "exporting": "Exporting...",
+      "copied": "Copied!"
     }
   }
 }

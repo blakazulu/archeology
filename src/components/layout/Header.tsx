@@ -1,35 +1,47 @@
-import { useLocation, Link, NavLink, useSearchParams } from 'react-router-dom';
-import { Home, Camera, FolderOpen, Settings } from 'lucide-react';
+import { useLocation, Link, NavLink } from 'react-router-dom';
+import { Home, Box, Palette, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { LanguageSelector } from '@/components/ui';
 
 const navItems = [
   { to: '/', icon: Home, labelKey: 'nav.home' },
-  { to: '/capture', icon: Camera, labelKey: 'nav.capture' },
-  { to: '/gallery', icon: FolderOpen, labelKey: 'nav.gallery' },
+  { to: '/save', icon: Box, labelKey: 'nav.save' },
+  { to: '/palette', icon: Palette, labelKey: 'nav.palette' },
   { to: '/settings', icon: Settings, labelKey: 'nav.settings' },
 ];
 
 export function Header() {
   const location = useLocation();
-  const [searchParams] = useSearchParams();
   const { t } = useTranslation();
   const isHomePage = location.pathname === '/';
 
   // Get title based on current path
   const getTitle = () => {
-    if (location.pathname.startsWith('/artifact/')) {
+    // Save the Past section
+    if (location.pathname.startsWith('/save/artifact/')) {
       return t('pages.artifact.title');
     }
-    // Show PastPalette when in colorize mode
-    if (location.pathname === '/capture' && searchParams.get('mode') === 'colorize') {
-      return t('pages.capture.pastPaletteTitle');
+    if (location.pathname.startsWith('/save/gallery')) {
+      return t('pages.save.galleryTitle');
     }
+    if (location.pathname.startsWith('/save')) {
+      return t('pages.home.saveThePast');
+    }
+
+    // Past Palette section
+    if (location.pathname.startsWith('/palette/artifact/')) {
+      return t('pages.artifact.title');
+    }
+    if (location.pathname.startsWith('/palette/gallery')) {
+      return t('pages.palette.galleryTitle');
+    }
+    if (location.pathname.startsWith('/palette')) {
+      return t('pages.home.pastPalette');
+    }
+
     const pageTitles: Record<string, string> = {
       '/': t('app.name'),
-      '/capture': t('pages.capture.title'),
-      '/gallery': t('pages.gallery.title'),
       '/settings': t('pages.settings.title'),
     };
     return pageTitles[location.pathname] || t('app.name');

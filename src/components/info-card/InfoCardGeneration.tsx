@@ -6,6 +6,7 @@ import {
   AlertCircle,
   RotateCcw,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useGenerateInfoCard } from '@/hooks/useGenerateInfoCard';
 import { MetadataForm } from './MetadataForm';
 import type { ArtifactMetadata, InfoCard, ArtifactImage } from '@/types';
@@ -32,6 +33,7 @@ export function InfoCardGeneration({
   onComplete,
   onCancel,
 }: InfoCardGenerationProps) {
+  const { t } = useTranslation();
   // State
   const [step, setStep] = useState<GenerationStep>('metadata');
   const [metadata, setMetadata] = useState<ArtifactMetadata>(initialMetadata || {});
@@ -110,23 +112,23 @@ export function InfoCardGeneration({
   const getStatusMessage = useCallback((): string => {
     switch (state) {
       case 'uploading':
-        if (progress < 15) return 'Preparing image...';
-        if (progress < 30) return 'Encoding image data...';
-        return 'Sending to AI...';
+        if (progress < 15) return t('components.infoCard.status.preparing');
+        if (progress < 30) return t('components.infoCard.status.encoding');
+        return t('components.infoCard.status.sending');
       case 'processing':
-        if (progress < 50) return 'Analyzing artifact...';
-        if (progress < 70) return 'Identifying characteristics...';
-        if (progress < 85) return 'Generating info card...';
-        if (progress < 95) return 'Saving to database...';
-        return 'Finishing up...';
+        if (progress < 50) return t('components.infoCard.status.analyzing');
+        if (progress < 70) return t('components.infoCard.status.identifying');
+        if (progress < 85) return t('components.infoCard.status.generating');
+        if (progress < 95) return t('components.infoCard.status.saving');
+        return t('components.infoCard.status.finishing');
       case 'complete':
-        return 'Info card generated!';
+        return t('components.infoCard.status.complete');
       case 'error':
-        return 'An error occurred';
+        return t('common.errors.generic');
       default:
-        return 'Ready to analyze';
+        return t('components.infoCard.status.preparing');
     }
-  }, [state, progress]);
+  }, [state, progress, t]);
 
   // No images available
   if (images.length === 0) {
@@ -134,10 +136,10 @@ export function InfoCardGeneration({
       <div className="rounded-xl border border-desert-sand bg-aged-paper p-6 text-center">
         <AlertCircle className="h-12 w-12 text-stone-gray/50 mx-auto mb-3" />
         <h3 className="font-heading font-semibold text-charcoal mb-2">
-          No Images Available
+          {t('components.infoCard.noImagesAvailable')}
         </h3>
         <p className="text-sm text-stone-gray">
-          Capture some photos of your artifact first to generate an AI info card.
+          {t('components.infoCard.captureFirst')}
         </p>
       </div>
     );
@@ -152,24 +154,24 @@ export function InfoCardGeneration({
             <AlertCircle className="h-6 w-6 text-rust-red" />
           </div>
           <h3 className="font-heading font-semibold text-charcoal mb-2">
-            Generation Failed
+            {t('components.infoCard.generationFailed')}
           </h3>
           <p className="text-sm text-stone-gray mb-4">
-            {error?.message || 'An error occurred while generating the info card.'}
+            {error?.message || t('components.infoCard.errorOccurred')}
           </p>
           <div className="flex gap-3 justify-center">
             <button
               onClick={handleCancel}
               className="px-4 py-2 rounded-lg border border-desert-sand text-charcoal hover:bg-aged-paper transition-colors"
             >
-              Cancel
+              {t('components.infoCard.cancel')}
             </button>
             <button
               onClick={handleRetry}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-terracotta text-bone-white hover:bg-clay transition-colors"
             >
               <RotateCcw className="h-4 w-4" />
-              Try Again
+              {t('components.infoCard.tryAgain')}
             </button>
           </div>
         </div>
@@ -209,7 +211,7 @@ export function InfoCardGeneration({
           </div>
 
           <p className="text-xs text-stone-gray text-center">
-            AI is analyzing your artifact image...
+            {t('components.infoCard.status.analyzing')}
           </p>
         </div>
 
@@ -219,7 +221,7 @@ export function InfoCardGeneration({
           className="w-full mt-4 flex items-center justify-center gap-2 py-2.5 rounded-lg border border-desert-sand text-stone-gray hover:bg-parchment transition-colors"
         >
           <X className="h-4 w-4" />
-          Cancel
+          {t('components.infoCard.cancel')}
         </button>
       </div>
     );
@@ -235,10 +237,10 @@ export function InfoCardGeneration({
         </div>
         <div>
           <h3 className="font-heading font-semibold text-charcoal">
-            Generate AI Info Card
+            {t('components.infoCard.generateInfoCard')}
           </h3>
           <p className="text-sm text-stone-gray">
-            Add context to improve analysis accuracy
+            {t('components.infoCard.addContext')}
           </p>
         </div>
       </div>
@@ -247,15 +249,15 @@ export function InfoCardGeneration({
       <div className="flex items-center gap-3 p-3 rounded-xl bg-aged-paper border border-desert-sand">
         <img
           src={primaryImageUrl || ''}
-          alt="Selected image"
+          alt={t('components.infoCard.imageSelected')}
           className="w-16 h-16 rounded-lg object-cover"
         />
         <div>
           <p className="text-sm font-medium text-charcoal">
-            Image selected for analysis
+            {t('components.infoCard.imageSelected')}
           </p>
           <p className="text-xs text-stone-gray capitalize">
-            {images[0].angle} view • {images.length} total images
+            {t('components.infoCard.imageInfo', { angle: images[0].angle })} • {t('components.infoCard.totalImages', { count: images.length })}
           </p>
         </div>
       </div>
@@ -274,7 +276,7 @@ export function InfoCardGeneration({
             onClick={handleCancel}
             className="flex-1 py-3 rounded-lg border border-desert-sand text-charcoal hover:bg-aged-paper transition-colors"
           >
-            Cancel
+            {t('components.infoCard.cancel')}
           </button>
         )}
         <button
@@ -282,13 +284,13 @@ export function InfoCardGeneration({
           className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-terracotta text-bone-white font-medium hover:bg-clay transition-colors"
         >
           <Sparkles className="h-4 w-4" />
-          Generate Info Card
+          {t('components.infoCard.generateInfoCard')}
         </button>
       </div>
 
       {/* Disclaimer */}
       <p className="text-xs text-stone-gray text-center">
-        AI analysis is speculative and should be verified by qualified archaeologists.
+        {t('components.infoCard.aiDisclaimer')}
       </p>
     </div>
   );

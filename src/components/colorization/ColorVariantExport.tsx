@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Download, FileArchive, X, Check, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import type { ColorVariant, ColorScheme } from '@/types/artifact';
 import { exportVariantsAsZip, downloadVariant } from '@/lib/utils/zipExport';
@@ -14,26 +15,26 @@ export interface ColorVariantExportProps {
 }
 
 /**
- * Get color scheme display name and styling
+ * Get color scheme styling and key
  */
-function getColorSchemeStyle(scheme: ColorScheme): { bg: string; text: string; label: string } {
+function getColorSchemeStyle(scheme: ColorScheme): { bg: string; text: string; key: string } {
   switch (scheme) {
     case 'roman':
-      return { bg: 'bg-terracotta/20', text: 'text-terracotta', label: 'Roman' };
+      return { bg: 'bg-terracotta/20', text: 'text-terracotta', key: 'roman' };
     case 'greek':
-      return { bg: 'bg-desert-teal/20', text: 'text-desert-teal', label: 'Greek' };
+      return { bg: 'bg-desert-teal/20', text: 'text-desert-teal', key: 'greek' };
     case 'egyptian':
-      return { bg: 'bg-gold-ochre/20', text: 'text-gold-ochre', label: 'Egyptian' };
+      return { bg: 'bg-gold-ochre/20', text: 'text-gold-ochre', key: 'egyptian' };
     case 'mesopotamian':
-      return { bg: 'bg-oxidized-bronze/20', text: 'text-oxidized-bronze', label: 'Mesopotamian' };
+      return { bg: 'bg-oxidized-bronze/20', text: 'text-oxidized-bronze', key: 'mesopotamian' };
     case 'weathered':
-      return { bg: 'bg-stone-gray/20', text: 'text-stone-gray', label: 'Weathered' };
+      return { bg: 'bg-stone-gray/20', text: 'text-stone-gray', key: 'weathered' };
     case 'original':
-      return { bg: 'bg-charcoal/20', text: 'text-charcoal', label: 'Original' };
+      return { bg: 'bg-charcoal/20', text: 'text-charcoal', key: 'original' };
     case 'custom':
-      return { bg: 'bg-rust-red/20', text: 'text-rust-red', label: 'Custom' };
+      return { bg: 'bg-rust-red/20', text: 'text-rust-red', key: 'custom' };
     default:
-      return { bg: 'bg-stone-gray/20', text: 'text-stone-gray', label: 'Unknown' };
+      return { bg: 'bg-stone-gray/20', text: 'text-stone-gray', key: 'unknown' };
   }
 }
 
@@ -46,6 +47,7 @@ export function ColorVariantExport({
   artifactName,
   onClose,
 }: ColorVariantExportProps) {
+  const { t } = useTranslation();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [includeMetadata, setIncludeMetadata] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
@@ -123,7 +125,7 @@ export function ColorVariantExport({
       }, 1500);
     } catch (error) {
       console.error('Export failed:', error);
-      alert('Failed to export variants. Please try again.');
+      alert(t('common.errors.generic'));
     } finally {
       setIsExporting(false);
     }
@@ -134,11 +136,11 @@ export function ColorVariantExport({
       <div className="w-full max-w-md rounded-2xl bg-parchment shadow-xl max-h-[90vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-desert-sand flex-shrink-0">
-          <h2 className="font-heading font-semibold text-charcoal">Export Color Variants</h2>
+          <h2 className="font-heading font-semibold text-charcoal">{t('components.colorization.export.exportColorVariants')}</h2>
           <button
             onClick={onClose}
             className="p-2 rounded-lg hover:bg-aged-paper transition-colors"
-            aria-label="Close"
+            aria-label={t('common.buttons.close')}
           >
             <X className="h-5 w-5 text-stone-gray" />
           </button>
@@ -148,7 +150,7 @@ export function ColorVariantExport({
         <div className="p-4 space-y-4 overflow-y-auto flex-1">
           {variants.length === 0 ? (
             <p className="text-sm text-stone-gray text-center py-8">
-              No color variants available to export.
+              {t('components.colorization.export.noVariantsAvailable')}
             </p>
           ) : (
             <>
@@ -165,7 +167,7 @@ export function ColorVariantExport({
                   {allSelected && <Check className="h-3 w-3 text-bone-white" />}
                 </div>
                 <span className="text-sm font-medium text-charcoal">
-                  Select All ({variants.length} variants)
+                  {t('components.colorization.export.selectAll', { count: variants.length })}
                 </span>
               </label>
 
@@ -176,6 +178,7 @@ export function ColorVariantExport({
               <div className="space-y-2 max-h-60 overflow-y-auto">
                 {variants.map((variant) => {
                   const schemeStyle = getColorSchemeStyle(variant.colorScheme);
+                  const schemeLabel = t(`components.colorization.schemes.${schemeStyle.key}`);
                   const isSelected = selectedIds.has(variant.id);
 
                   return (
@@ -208,7 +211,7 @@ export function ColorVariantExport({
                         {thumbnails[variant.id] ? (
                           <img
                             src={thumbnails[variant.id]}
-                            alt={schemeStyle.label}
+                            alt={schemeLabel}
                             className="w-full h-full object-cover"
                           />
                         ) : (
@@ -228,7 +231,7 @@ export function ColorVariantExport({
                               schemeStyle.text
                             )}
                           >
-                            {schemeStyle.label}
+                            {schemeLabel}
                           </span>
                         </div>
                         <p className="text-xs text-stone-gray mt-1 truncate">
@@ -260,9 +263,9 @@ export function ColorVariantExport({
                   {includeMetadata && <Check className="h-3 w-3 text-bone-white" />}
                 </div>
                 <div className="flex-1">
-                  <span className="text-sm font-medium text-charcoal">Include Metadata</span>
+                  <span className="text-sm font-medium text-charcoal">{t('components.colorization.export.includeMetadataTitle')}</span>
                   <p className="text-xs text-stone-gray">
-                    Add JSON file with color schemes, prompts, and AI model info
+                    {t('components.colorization.export.includeMetadata')}
                   </p>
                 </div>
               </label>
@@ -276,7 +279,7 @@ export function ColorVariantExport({
             onClick={onClose}
             className="flex-1 py-3 rounded-lg border border-desert-sand text-charcoal hover:bg-aged-paper transition-colors"
           >
-            Cancel
+            {t('common.buttons.cancel')}
           </button>
           <button
             onClick={handleExport}
@@ -291,22 +294,22 @@ export function ColorVariantExport({
             {isExporting ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Exporting...
+                {t('components.colorization.export.exporting')}
               </>
             ) : exportSuccess ? (
               <>
                 <Check className="h-4 w-4" />
-                Exported!
+                {t('components.colorization.export.exported')}
               </>
             ) : selectedIds.size > 1 || includeMetadata ? (
               <>
                 <FileArchive className="h-4 w-4" />
-                Download ZIP
+                {t('components.colorization.export.downloadZip')}
               </>
             ) : (
               <>
                 <Download className="h-4 w-4" />
-                Download
+                {t('components.colorization.export.download')}
               </>
             )}
           </button>

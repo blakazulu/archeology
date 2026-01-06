@@ -9,6 +9,7 @@ import type { Artifact } from '@/types';
 interface ArtifactCardProps {
   artifact: Artifact;
   className?: string;
+  basePath?: string; // Base path for navigation (e.g., '/save' or '/palette')
 }
 
 /**
@@ -37,7 +38,7 @@ function getStatusStyle(status: Artifact['status'], t: (key: string) => string):
  * Artifact card component for grid display
  * Shows thumbnail, name, date, status badge, and site name
  */
-export function ArtifactCard({ artifact, className }: ArtifactCardProps) {
+export function ArtifactCard({ artifact, className, basePath }: ArtifactCardProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
@@ -58,7 +59,22 @@ export function ArtifactCard({ artifact, className }: ArtifactCardProps) {
   const displayDate = formatDate(artifact.metadata?.dateFound || artifact.createdAt);
 
   const handleClick = () => {
-    navigate(`/artifact/${artifact.id}`);
+    // Determine the correct path based on basePath prop or artifact's captureMode
+    const captureMode = artifact.metadata?.captureMode;
+    let path: string;
+
+    if (basePath) {
+      path = `${basePath}/artifact/${artifact.id}`;
+    } else if (captureMode === 'palette') {
+      path = `/palette/artifact/${artifact.id}`;
+    } else if (captureMode === 'save') {
+      path = `/save/artifact/${artifact.id}`;
+    } else {
+      // Fallback for legacy artifacts - go to save section
+      path = `/save/artifact/${artifact.id}`;
+    }
+
+    navigate(path);
   };
 
   return (

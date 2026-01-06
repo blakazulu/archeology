@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { RefreshCw, Trash2, ChevronDown, ChevronUp, Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { useOfflineQueue } from '@/hooks/useOfflineQueue';
 import { useAppStore } from '@/stores/appStore';
@@ -9,6 +10,7 @@ import { formatDate } from '@/lib/utils';
  * Indicator showing queued operations and allowing retry
  */
 export function OfflineQueueIndicator() {
+  const { t } = useTranslation();
   const {
     queuedOperations,
     isProcessing,
@@ -26,13 +28,13 @@ export function OfflineQueueIndicator() {
   const getOperationLabel = (type: string): string => {
     switch (type) {
       case 'reconstruct3d':
-        return '3D Reconstruction';
+        return t('ui.queueIndicator.operations.3dReconstruction');
       case 'generateInfoCard':
-        return 'Info Card Generation';
+        return t('ui.queueIndicator.operations.infoCardGeneration');
       case 'colorize':
-        return 'Colorization';
+        return t('ui.queueIndicator.operations.colorization');
       default:
-        return 'Unknown Operation';
+        return t('ui.queueIndicator.operations.unknown');
     }
   };
 
@@ -50,10 +52,12 @@ export function OfflineQueueIndicator() {
             </div>
             <div className="text-left">
               <p className="font-medium text-charcoal text-sm">
-                {queuedOperations.length} Pending Operation{queuedOperations.length !== 1 ? 's' : ''}
+                {queuedOperations.length === 1
+                  ? t('ui.queueIndicator.pendingOperation', { count: queuedOperations.length })
+                  : t('ui.queueIndicator.pendingOperations', { count: queuedOperations.length })}
               </p>
               <p className="text-xs text-stone-gray">
-                {isOnline ? 'Click to process' : 'Waiting for connection'}
+                {isOnline ? t('ui.queueIndicator.clickToProcess') : t('ui.queueIndicator.waitingForConnection')}
               </p>
             </div>
           </div>
@@ -97,7 +101,7 @@ export function OfflineQueueIndicator() {
                 )}
               >
                 <RefreshCw className={cn('h-4 w-4', isProcessing && 'animate-spin')} />
-                {isProcessing ? 'Processing...' : 'Process Now'}
+                {isProcessing ? t('ui.queueIndicator.processing') : t('ui.queueIndicator.processNow')}
               </button>
               <button
                 onClick={clearQueuedOperations}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 interface CaptureOverlayProps {
@@ -6,6 +7,7 @@ interface CaptureOverlayProps {
 }
 
 export function CaptureOverlay({ showGrid = true, className }: CaptureOverlayProps) {
+  const { t } = useTranslation();
   return (
     <div className={cn('absolute inset-0 pointer-events-none', className)}>
       {/* Corner brackets */}
@@ -44,7 +46,7 @@ export function CaptureOverlay({ showGrid = true, className }: CaptureOverlayPro
       <div className="absolute left-0 right-0 bottom-32 sm:bottom-36 px-4">
         <div className="bg-black/40 backdrop-blur-sm rounded-lg px-4 py-2 mx-auto max-w-xs text-center">
           <p className="text-bone-white/90 text-sm">
-            Center the artifact in the frame
+            {t('components.captureOverlay.centerArtifact')}
           </p>
         </div>
       </div>

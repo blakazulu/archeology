@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Palette, ImageOff } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import type { ColorVariant, ArtifactImage } from '@/types/artifact';
 import { ColorVariantCard } from './ColorVariantCard';
@@ -17,14 +18,14 @@ interface ColorVariantGalleryProps {
 /**
  * Empty state component when no color variants exist
  */
-function EmptyState({ message }: { message: string }) {
+function EmptyState({ message, title }: { message: string; title: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 px-4">
       <div className="w-20 h-20 rounded-full bg-aged-paper border-2 border-desert-sand flex items-center justify-center mb-4">
         <Palette className="w-10 h-10 text-stone-gray/50" />
       </div>
       <h3 className="font-heading text-xl font-semibold text-charcoal mb-2">
-        No Color Variants
+        {title}
       </h3>
       <p className="text-stone-gray text-center max-w-xs">
         {message}
@@ -61,9 +62,13 @@ function LoadingSkeleton() {
 function OriginalImageCard({
   image,
   onClick,
+  originalLabel,
+  originalImageLabel,
 }: {
   image: ArtifactImage;
   onClick?: () => void;
+  originalLabel: string;
+  originalImageLabel: string;
 }) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
@@ -86,13 +91,13 @@ function OriginalImageCard({
         'transition-all duration-200 hover:scale-[1.02]',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-terracotta'
       )}
-      aria-label="View original image"
+      aria-label={originalImageLabel}
     >
       <div className="aspect-square bg-aged-paper relative overflow-hidden">
         {imageUrl ? (
           <img
             src={imageUrl}
-            alt="Original artifact"
+            alt={originalLabel}
             className="w-full h-full object-cover"
           />
         ) : (
@@ -103,12 +108,12 @@ function OriginalImageCard({
 
         {/* Original badge */}
         <div className="absolute top-2 left-2 px-2 py-1 rounded-full text-xs font-medium bg-terracotta text-bone-white">
-          Original
+          {originalLabel}
         </div>
       </div>
 
       <div className="p-3">
-        <p className="text-sm font-medium text-charcoal">Original Image</p>
+        <p className="text-sm font-medium text-charcoal">{originalImageLabel}</p>
       </div>
     </button>
   );
@@ -124,15 +129,18 @@ export function ColorVariantGallery({
   onVariantClick,
   onVariantDelete,
   isLoading = false,
-  emptyMessage = 'Generate color variants to see historical color reconstructions of your artifact.',
+  emptyMessage,
   className,
 }: ColorVariantGalleryProps) {
+  const { t } = useTranslation();
+  const defaultEmptyMessage = t('components.colorization.variant.noColorVariants');
+
   if (isLoading) {
     return <LoadingSkeleton />;
   }
 
   if (variants.length === 0 && !originalImage) {
-    return <EmptyState message={emptyMessage} />;
+    return <EmptyState message={emptyMessage || defaultEmptyMessage} title={t('components.colorization.variant.noColorVariants')} />;
   }
 
   return (
@@ -144,7 +152,11 @@ export function ColorVariantGallery({
     >
       {/* Show original image first if provided */}
       {originalImage && (
-        <OriginalImageCard image={originalImage} />
+        <OriginalImageCard
+          image={originalImage}
+          originalLabel={t('components.colorization.variant.original')}
+          originalImageLabel={t('components.colorization.variant.originalImage')}
+        />
       )}
 
       {/* Color variants */}
@@ -160,7 +172,7 @@ export function ColorVariantGallery({
       {/* Empty message if only original image and no variants */}
       {variants.length === 0 && originalImage && (
         <div className="col-span-full">
-          <EmptyState message={emptyMessage} />
+          <EmptyState message={emptyMessage || defaultEmptyMessage} title={t('components.colorization.variant.noColorVariants')} />
         </div>
       )}
     </div>

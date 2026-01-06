@@ -104,6 +104,9 @@ export interface ArtifactMetadata {
 
   // Tags for organization
   tags?: string[];
+
+  // Capture mode - which section created this artifact
+  captureMode?: 'save' | 'palette';
 }
 
 export interface Artifact {

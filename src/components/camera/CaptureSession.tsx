@@ -1,19 +1,13 @@
 import { useState, useCallback, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Check, Camera, Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { CameraView } from './CameraView';
 import { CapturePreview } from './CapturePreview';
 import { cn } from '@/lib/utils';
 import { useCaptureStore } from '@/stores';
 import type { ImageAngle } from '@/types';
 
-const CAPTURE_ANGLES: { angle: ImageAngle; label: string; tip: string }[] = [
-  { angle: 'front', label: 'Front', tip: 'Capture the main front view' },
-  { angle: 'back', label: 'Back', tip: 'Capture the back of the artifact' },
-  { angle: 'left', label: 'Left Side', tip: 'Capture the left side' },
-  { angle: 'right', label: 'Right Side', tip: 'Capture the right side' },
-  { angle: 'top', label: 'Top', tip: 'Capture from above' },
-  { angle: 'detail', label: 'Detail', tip: 'Capture any important details (optional)' },
-];
+const CAPTURE_ANGLES: ImageAngle[] = ['front', 'back', 'left', 'right', 'top', 'detail'];
 
 type CaptureMode = 'single' | 'multi';
 
@@ -30,6 +24,7 @@ interface CapturedImage {
 }
 
 export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionProps) {
+  const { t } = useTranslation();
   const [isCapturing, setIsCapturing] = useState(true);
   const [currentAngleIndex, setCurrentAngleIndex] = useState(0);
   const [capturedImages, setCapturedImages] = useState<CapturedImage[]>([]);
@@ -37,6 +32,35 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
   const [imageUrls, setImageUrls] = useState<Map<string, string>>(new Map());
 
   const { addCapturedImage, clearCapturedImages } = useCaptureStore();
+
+  // Angle key mapping for translations
+  const getAngleLabel = (angle: ImageAngle): string => {
+    const angleKeys: Record<ImageAngle, string> = {
+      front: 'front',
+      back: 'back',
+      left: 'leftSide',
+      right: 'rightSide',
+      top: 'top',
+      bottom: 'top', // No bottom in translations, using top as fallback
+      detail: 'detail',
+      context: 'detail', // No context in translations, using detail as fallback
+    };
+    return t(`pages.capture.angles.${angleKeys[angle]}`);
+  };
+
+  const getAngleTip = (angle: ImageAngle): string => {
+    const angleKeys: Record<ImageAngle, string> = {
+      front: 'front',
+      back: 'back',
+      left: 'leftSide',
+      right: 'rightSide',
+      top: 'top',
+      bottom: 'top',
+      detail: 'detail',
+      context: 'detail',
+    };
+    return t(`pages.capture.angleTips.${angleKeys[angle]}`);
+  };
 
   // Cleanup URLs on unmount
   useEffect(() => {
@@ -56,6 +80,8 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
   }, [imageUrls]);
 
   const currentAngle = CAPTURE_ANGLES[currentAngleIndex];
+  const currentAngleLabel = getAngleLabel(currentAngle);
+  const currentAngleTip = getAngleTip(currentAngle);
   const isSingleMode = mode === 'single';
   const requiredAngles = isSingleMode ? 1 : 3; // At least 3 for multi-mode
   const hasEnoughImages = capturedImages.length >= requiredAngles;
@@ -71,7 +97,7 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
     const newImage: CapturedImage = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
       blob: pendingBlob,
-      angle: currentAngle.angle,
+      angle: currentAngle,
     };
 
     setCapturedImages((prev) => [...prev, newImage]);
@@ -95,7 +121,7 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
       setCurrentAngleIndex((prev) => prev + 1);
     }
     setIsCapturing(true);
-  }, [pendingBlob, currentAngle.angle, isSingleMode, currentAngleIndex, addCapturedImage, onComplete]);
+  }, [pendingBlob, currentAngle, isSingleMode, currentAngleIndex, addCapturedImage, onComplete]);
 
   const handleRetake = useCallback(() => {
     setPendingBlob(null);
@@ -166,8 +192,8 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <div className="text-center">
-                  <p className="text-bone-white font-medium">{currentAngle.label}</p>
-                  <p className="text-bone-white/60 text-xs">{currentAngle.tip}</p>
+                  <p className="text-bone-white font-medium">{currentAngleLabel}</p>
+                  <p className="text-bone-white/60 text-xs">{currentAngleTip}</p>
                 </div>
                 <button
                   onClick={() => setCurrentAngleIndex((prev) => Math.min(CAPTURE_ANGLES.length - 1, prev + 1))}
@@ -181,12 +207,12 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
               {/* Angle dots */}
               <div className="flex items-center justify-center gap-2">
                 {CAPTURE_ANGLES.map((angle, idx) => {
-                  const isCaptured = capturedImages.some((img) => img.angle === angle.angle);
+                  const isCaptured = capturedImages.some((img) => img.angle === angle);
                   const isCurrent = idx === currentAngleIndex;
 
                   return (
                     <button
-                      key={angle.angle}
+                      key={angle}
                       onClick={() => setCurrentAngleIndex(idx)}
                       className={cn(
                         'w-3 h-3 rounded-full transition-all',
@@ -204,7 +230,7 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
               {/* Progress and complete button */}
               <div className="mt-3 flex items-center justify-between">
                 <span className="text-bone-white/60 text-sm">
-                  {capturedImages.length} / {CAPTURE_ANGLES.length} captured
+                  {capturedImages.length} / {CAPTURE_ANGLES.length} {t('components.captureSession.captured')}
                 </span>
                 {hasEnoughImages && (
                   <button
@@ -212,7 +238,7 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
                     className="flex items-center gap-2 px-4 py-2 bg-oxidized-bronze text-white rounded-lg text-sm font-medium"
                   >
                     <Check className="w-4 h-4" />
-                    Done
+                    {t('components.captureSession.done')}
                   </button>
                 )}
               </div>
@@ -234,17 +260,17 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
               onClick={handleCancel}
               className="text-stone-gray hover:text-charcoal"
             >
-              Cancel
+              {t('components.captureSession.cancel')}
             </button>
             <h2 className="font-heading text-lg font-semibold text-charcoal">
-              Captured Photos
+              {t('components.captureSession.capturedPhotos')}
             </h2>
             <button
               onClick={handleComplete}
               disabled={!hasEnoughImages}
               className="text-terracotta font-medium disabled:opacity-50"
             >
-              Done
+              {t('components.captureSession.done')}
             </button>
           </div>
         </div>
@@ -259,12 +285,12 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
               >
                 <img
                   src={getImageUrl(image)}
-                  alt={`${image.angle} view`}
+                  alt={`${getAngleLabel(image.angle)} view`}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
                   <span className="text-bone-white text-xs font-medium capitalize">
-                    {image.angle}
+                    {getAngleLabel(image.angle)}
                   </span>
                 </div>
                 <button
@@ -282,7 +308,7 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
               className="aspect-square rounded-xl border-2 border-dashed border-desert-sand bg-aged-paper flex flex-col items-center justify-center text-stone-gray hover:border-terracotta hover:text-terracotta transition-colors"
             >
               <Camera className="w-8 h-8 mb-2" />
-              <span className="text-sm">Add Photo</span>
+              <span className="text-sm">{t('components.captureSession.addPhoto')}</span>
             </button>
           </div>
         </div>
@@ -291,8 +317,8 @@ export function CaptureSession({ mode, onComplete, onCancel }: CaptureSessionPro
         <div className="p-4 border-t border-desert-sand safe-area-bottom">
           <p className="text-center text-stone-gray text-sm">
             {hasEnoughImages
-              ? `${capturedImages.length} photos captured. Tap Done to continue.`
-              : `Capture at least ${requiredAngles} photos (${capturedImages.length} of ${requiredAngles})`}
+              ? t('components.captureSession.photosCount', { count: capturedImages.length, total: CAPTURE_ANGLES.length })
+              : t('components.captureSession.minimumPhotos', { count: requiredAngles })}
           </p>
         </div>
       </div>

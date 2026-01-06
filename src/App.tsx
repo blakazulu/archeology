@@ -11,18 +11,33 @@ import './index.css';
 const HomePage = lazy(() =>
   import('./pages/HomePage').then((m) => ({ default: m.HomePage }))
 );
-const CapturePage = lazy(() =>
-  import('./pages/CapturePage').then((m) => ({ default: m.CapturePage }))
-);
-const GalleryPage = lazy(() =>
-  import('./pages/GalleryPage').then((m) => ({ default: m.GalleryPage }))
-);
 const SettingsPage = lazy(() =>
   import('./pages/SettingsPage').then((m) => ({ default: m.SettingsPage }))
 );
-const ArtifactDetailPage = lazy(() =>
-  import('./pages/ArtifactDetailPage').then((m) => ({
-    default: m.ArtifactDetailPage,
+
+// Save the Past section
+const SaveThePastPage = lazy(() =>
+  import('./pages/SaveThePastPage').then((m) => ({ default: m.SaveThePastPage }))
+);
+const SaveGalleryPage = lazy(() =>
+  import('./pages/SaveGalleryPage').then((m) => ({ default: m.SaveGalleryPage }))
+);
+const SaveArtifactDetailPage = lazy(() =>
+  import('./pages/SaveArtifactDetailPage').then((m) => ({
+    default: m.SaveArtifactDetailPage,
+  }))
+);
+
+// Past Palette section
+const PastPalettePage = lazy(() =>
+  import('./pages/PastPalettePage').then((m) => ({ default: m.PastPalettePage }))
+);
+const PaletteGalleryPage = lazy(() =>
+  import('./pages/PaletteGalleryPage').then((m) => ({ default: m.PaletteGalleryPage }))
+);
+const PaletteArtifactDetailPage = lazy(() =>
+  import('./pages/PaletteArtifactDetailPage').then((m) => ({
+    default: m.PaletteArtifactDetailPage,
   }))
 );
 
@@ -44,11 +59,21 @@ function App() {
           <Suspense fallback={<LoadingScreen />}>
             <Routes>
               <Route element={<Layout />}>
+                {/* Home */}
                 <Route path="/" element={<HomePage />} />
-                <Route path="/capture" element={<CapturePage />} />
-                <Route path="/gallery" element={<GalleryPage />} />
+
+                {/* Save the Past - 3D Reconstruction */}
+                <Route path="/save" element={<SaveThePastPage />} />
+                <Route path="/save/gallery" element={<SaveGalleryPage />} />
+                <Route path="/save/artifact/:id" element={<SaveArtifactDetailPage />} />
+
+                {/* Past Palette - Colorization */}
+                <Route path="/palette" element={<PastPalettePage />} />
+                <Route path="/palette/gallery" element={<PaletteGalleryPage />} />
+                <Route path="/palette/artifact/:id" element={<PaletteArtifactDetailPage />} />
+
+                {/* Settings */}
                 <Route path="/settings" element={<SettingsPage />} />
-                <Route path="/artifact/:id" element={<ArtifactDetailPage />} />
               </Route>
             </Routes>
           </Suspense>

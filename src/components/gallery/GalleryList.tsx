@@ -8,6 +8,7 @@ interface GalleryListProps {
   artifacts: Artifact[];
   isLoading?: boolean;
   className?: string;
+  basePath?: string; // Base path for navigation (e.g., '/save' or '/palette')
 }
 
 /**
@@ -55,7 +56,7 @@ function LoadingSkeleton() {
 /**
  * Vertical list layout for artifacts
  */
-export function GalleryList({ artifacts, isLoading = false, className }: GalleryListProps) {
+export function GalleryList({ artifacts, isLoading = false, className, basePath }: GalleryListProps) {
   const { t } = useTranslation();
 
   if (isLoading) {
@@ -69,7 +70,7 @@ export function GalleryList({ artifacts, isLoading = false, className }: Gallery
   return (
     <div className={cn('w-full space-y-2', className)}>
       {artifacts.map((artifact) => (
-        <ArtifactListItem key={artifact.id} artifact={artifact} />
+        <ArtifactListItem key={artifact.id} artifact={artifact} basePath={basePath} />
       ))}
     </div>
   );

@@ -75,7 +75,7 @@ export function HomePage() {
           <div className="grid gap-4 md:grid-cols-2 md:gap-6 lg:gap-8">
             {/* Save The Past Card */}
             <Link
-              to="/capture"
+              to="/save"
               className="group relative overflow-hidden rounded-2xl lg:rounded-3xl bg-gradient-to-br from-aged-paper to-parchment border border-desert-sand/80 p-5 md:p-6 lg:p-8 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-sienna/10 hover:border-clay hover:-translate-y-1"
             >
               {/* Card background decoration */}
@@ -128,7 +128,7 @@ export function HomePage() {
 
             {/* PastPalette Card */}
             <Link
-              to="/capture?mode=colorize"
+              to="/palette"
               className="group relative overflow-hidden rounded-2xl lg:rounded-3xl bg-gradient-to-br from-aged-paper to-parchment border border-desert-sand/80 p-5 md:p-6 lg:p-8 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-desert-teal/10 hover:border-desert-teal/50 hover:-translate-y-1"
             >
               {/* Card background decoration */}

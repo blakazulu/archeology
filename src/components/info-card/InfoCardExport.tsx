@@ -8,6 +8,7 @@ import {
   Download,
   X,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import type { InfoCard, Artifact, ArtifactImage } from '@/types';
 
@@ -39,6 +40,7 @@ export function InfoCardExport({
   images,
   onClose,
 }: InfoCardExportProps) {
+  const { t } = useTranslation();
   const [selectedFormat, setSelectedFormat] = useState<ExportFormat>('pdf');
   const [isExporting, setIsExporting] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
@@ -252,7 +254,7 @@ export function InfoCardExport({
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error('PDF export failed:', error);
-      alert('Failed to export PDF. Please try again.');
+      alert(t('components.infoCard.export.failedToExportPdf'));
     } finally {
       setIsExporting(false);
     }
@@ -304,7 +306,7 @@ export function InfoCardExport({
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error('JSON export failed:', error);
-      alert('Failed to export JSON. Please try again.');
+      alert(t('components.infoCard.export.failedToExportJson'));
     } finally {
       setIsExporting(false);
     }
@@ -337,7 +339,7 @@ Generated with Save The Past
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (error) {
       console.error('Copy failed:', error);
-      alert('Failed to copy to clipboard');
+      alert(t('components.infoCard.export.failedToCopy'));
     }
   }, [artifact, infoCard]);
 
@@ -363,7 +365,7 @@ Generated with Save The Past
       <div className="w-full max-w-md rounded-2xl bg-parchment shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-desert-sand">
-          <h2 className="font-heading font-semibold text-charcoal">Export Info Card</h2>
+          <h2 className="font-heading font-semibold text-charcoal">{t('components.infoCard.export.exportInfoCard')}</h2>
           <button
             onClick={onClose}
             className="p-2 rounded-lg hover:bg-aged-paper transition-colors"
@@ -374,7 +376,7 @@ Generated with Save The Past
 
         {/* Format Selection */}
         <div className="p-4 space-y-3">
-          <p className="text-sm text-stone-gray mb-3">Choose an export format:</p>
+          <p className="text-sm text-stone-gray mb-3">{t('components.infoCard.export.chooseFormat')}</p>
 
           {/* PDF Option */}
           <button
@@ -395,9 +397,9 @@ Generated with Save The Past
               <FileText className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="font-medium text-charcoal">PDF Report</p>
+              <p className="font-medium text-charcoal">{t('components.infoCard.export.pdfReport')}</p>
               <p className="text-xs text-stone-gray">
-                Printable report with all artifact details
+                {t('components.infoCard.export.pdfDesc')}
               </p>
             </div>
           </button>
@@ -421,9 +423,9 @@ Generated with Save The Past
               <FileJson className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="font-medium text-charcoal">JSON Data</p>
+              <p className="font-medium text-charcoal">{t('components.infoCard.export.jsonData')}</p>
               <p className="text-xs text-stone-gray">
-                Structured data for databases or integration
+                {t('components.infoCard.export.jsonDesc')}
               </p>
             </div>
           </button>
@@ -447,9 +449,9 @@ Generated with Save The Past
               <Share2 className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="font-medium text-charcoal">Copy to Clipboard</p>
+              <p className="font-medium text-charcoal">{t('components.infoCard.export.copyToClipboard')}</p>
               <p className="text-xs text-stone-gray">
-                Plain text summary for sharing
+                {t('components.infoCard.export.copyDesc')}
               </p>
             </div>
           </button>
@@ -461,7 +463,7 @@ Generated with Save The Past
             onClick={onClose}
             className="flex-1 py-3 rounded-lg border border-desert-sand text-charcoal hover:bg-aged-paper transition-colors"
           >
-            Cancel
+            {t('components.infoCard.export.cancel')}
           </button>
           <button
             onClick={handleExport}
@@ -469,21 +471,21 @@ Generated with Save The Past
             className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-terracotta text-bone-white hover:bg-clay disabled:opacity-50 transition-colors"
           >
             {isExporting ? (
-              'Exporting...'
+              t('common.labels.exporting')
             ) : copySuccess ? (
               <>
                 <Check className="h-4 w-4" />
-                Copied!
+                {t('common.labels.copied')}
               </>
             ) : selectedFormat === 'share' ? (
               <>
                 <Copy className="h-4 w-4" />
-                Copy
+                {t('common.buttons.copy')}
               </>
             ) : (
               <>
                 <Download className="h-4 w-4" />
-                Export
+                {t('common.buttons.export')}
               </>
             )}
           </button>

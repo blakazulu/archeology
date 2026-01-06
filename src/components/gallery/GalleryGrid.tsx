@@ -8,6 +8,7 @@ interface GalleryGridProps {
   artifacts: Artifact[];
   isLoading?: boolean;
   className?: string;
+  basePath?: string; // Base path for navigation (e.g., '/save' or '/palette')
 }
 
 /**
@@ -55,7 +56,7 @@ function LoadingSkeleton() {
  * Responsive grid layout for artifact cards
  * 1 column on mobile, 2 on tablet, 3 on desktop
  */
-export function GalleryGrid({ artifacts, isLoading = false, className }: GalleryGridProps) {
+export function GalleryGrid({ artifacts, isLoading = false, className, basePath }: GalleryGridProps) {
   const { t } = useTranslation();
 
   if (isLoading) {
@@ -74,7 +75,7 @@ export function GalleryGrid({ artifacts, isLoading = false, className }: Gallery
       )}
     >
       {artifacts.map((artifact) => (
-        <ArtifactCard key={artifact.id} artifact={artifact} />
+        <ArtifactCard key={artifact.id} artifact={artifact} basePath={basePath} />
       ))}
     </div>
   );

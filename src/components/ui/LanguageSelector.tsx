@@ -1,4 +1,5 @@
 import { Globe, Check } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/hooks';
 import { cn } from '@/lib/utils';
 
@@ -13,6 +14,7 @@ const languages = [
 ];
 
 export function LanguageSelector({ variant = 'compact', className }: LanguageSelectorProps) {
+  const { t } = useTranslation();
   const { currentLanguage, toggleLanguage, changeLanguage, isRtl } = useLanguage();
 
   if (variant === 'compact') {
@@ -26,7 +28,7 @@ export function LanguageSelector({ variant = 'compact', className }: LanguageSel
           'hover:bg-aged-paper transition-colors touch-target',
           className
         )}
-        aria-label={currentLanguage === 'en' ? 'Switch to Hebrew' : 'Switch to English'}
+        aria-label={currentLanguage === 'en' ? t('ui.languageSelector.switchToHebrew') : t('ui.languageSelector.switchToEnglish')}
       >
         <Globe className="w-4 h-4" />
         <span className="font-semibold">{currentLanguage === 'en' ? 'עב' : 'EN'}</span>

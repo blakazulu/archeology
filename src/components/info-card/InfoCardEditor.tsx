@@ -12,6 +12,7 @@ import {
   Trash2,
   RotateCcw,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { updateInfoCard } from '@/lib/db';
 import type { InfoCard } from '@/types';
@@ -32,6 +33,8 @@ export function InfoCardEditor({
   onSave,
   onCancel,
 }: InfoCardEditorProps) {
+  const { t } = useTranslation();
+
   // Form state
   const [material, setMaterial] = useState(infoCard.material);
   const [ageRange, setAgeRange] = useState(infoCard.estimatedAge.range);
@@ -125,7 +128,7 @@ export function InfoCardEditor({
       onSave(updatedCard);
     } catch (error) {
       console.error('Failed to save info card:', error);
-      alert('Failed to save changes. Please try again.');
+      alert(t('components.infoCard.editor.failedToSave'));
     } finally {
       setIsSaving(false);
     }
@@ -146,12 +149,12 @@ export function InfoCardEditor({
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-desert-sand">
-        <h3 className="font-heading font-semibold text-charcoal">Edit Info Card</h3>
+        <h3 className="font-heading font-semibold text-charcoal">{t('components.infoCard.editor.editInfoCard')}</h3>
         <div className="flex items-center gap-2">
           <button
             onClick={handleReset}
             className="p-2 rounded-lg hover:bg-aged-paper text-stone-gray hover:text-charcoal transition-colors"
-            title="Reset to original"
+            title={t('components.infoCard.editor.resetToOriginal')}
           >
             <RotateCcw className="h-4 w-4" />
           </button>
@@ -162,7 +165,7 @@ export function InfoCardEditor({
       <div>
         <label className="flex items-center gap-2 text-xs font-medium text-stone-gray uppercase tracking-wide mb-1.5">
           <Gem className="h-3.5 w-3.5 text-terracotta" />
-          Material
+          {t('components.infoCard.editor.material')}
         </label>
         <input
           type="text"
@@ -176,7 +179,7 @@ export function InfoCardEditor({
       <div className="space-y-3">
         <label className="flex items-center gap-2 text-xs font-medium text-stone-gray uppercase tracking-wide">
           <Clock className="h-3.5 w-3.5 text-terracotta" />
-          Estimated Age
+          {t('components.infoCard.editor.estimatedAge')}
         </label>
 
         <input
@@ -189,7 +192,7 @@ export function InfoCardEditor({
 
         <div>
           <label className="text-xs text-stone-gray mb-1.5 block">
-            Confidence Level
+            {t('components.infoCard.editor.confidenceLevel')}
           </label>
           <div className="flex gap-2">
             {(['high', 'medium', 'low'] as ConfidenceLevel[]).map((level) => (
@@ -208,7 +211,7 @@ export function InfoCardEditor({
                     : 'bg-aged-paper border-desert-sand text-charcoal hover:bg-desert-sand/50'
                 )}
               >
-                {level.charAt(0).toUpperCase() + level.slice(1)}
+                {t(`components.infoCard.confidenceLevels.${level}`)}
               </button>
             ))}
           </div>
@@ -216,12 +219,12 @@ export function InfoCardEditor({
 
         <div>
           <label className="text-xs text-stone-gray mb-1.5 block">
-            Reasoning (optional)
+            {t('components.infoCard.editor.reasoningOptional')}
           </label>
           <textarea
             value={ageReasoning}
             onChange={(e) => setAgeReasoning(e.target.value)}
-            placeholder="Explain the dating reasoning..."
+            placeholder={t('components.infoCard.editor.reasoningPlaceholder')}
             rows={2}
             className="w-full px-3 py-2.5 rounded-lg border border-desert-sand bg-bone-white text-charcoal focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta resize-none"
           />
@@ -232,7 +235,7 @@ export function InfoCardEditor({
       <div>
         <label className="flex items-center gap-2 text-xs font-medium text-stone-gray uppercase tracking-wide mb-1.5">
           <Wrench className="h-3.5 w-3.5 text-terracotta" />
-          Possible Use
+          {t('components.infoCard.editor.possibleUse')}
         </label>
         <textarea
           value={possibleUse}
@@ -246,7 +249,7 @@ export function InfoCardEditor({
       <div>
         <label className="flex items-center gap-2 text-xs font-medium text-stone-gray uppercase tracking-wide mb-1.5">
           <Globe className="h-3.5 w-3.5 text-terracotta" />
-          Cultural Context
+          {t('components.infoCard.editor.culturalContext')}
         </label>
         <textarea
           value={culturalContext}
@@ -260,7 +263,7 @@ export function InfoCardEditor({
       <div>
         <label className="flex items-center gap-2 text-xs font-medium text-stone-gray uppercase tracking-wide mb-1.5">
           <Archive className="h-3.5 w-3.5 text-terracotta" />
-          Similar Artifacts
+          {t('components.infoCard.editor.similarArtifacts')}
         </label>
 
         <div className="space-y-2">
@@ -291,7 +294,7 @@ export function InfoCardEditor({
                   addSimilarArtifact();
                 }
               }}
-              placeholder="Add similar artifact..."
+              placeholder={t('components.infoCard.editor.addSimilarArtifact')}
               className="flex-1 px-3 py-2 rounded-lg border border-desert-sand bg-bone-white text-charcoal focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
             />
             <button
@@ -310,7 +313,7 @@ export function InfoCardEditor({
       <div>
         <label className="flex items-center gap-2 text-xs font-medium text-stone-gray uppercase tracking-wide mb-1.5">
           <Shield className="h-3.5 w-3.5 text-terracotta" />
-          Preservation Notes
+          {t('components.infoCard.editor.preservationNotes')}
         </label>
         <textarea
           value={preservationNotes}
@@ -327,7 +330,7 @@ export function InfoCardEditor({
           className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg border border-desert-sand text-charcoal hover:bg-aged-paper transition-colors"
         >
           <X className="h-4 w-4" />
-          Cancel
+          {t('common.buttons.cancel')}
         </button>
         <button
           onClick={handleSave}
@@ -335,7 +338,7 @@ export function InfoCardEditor({
           className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-terracotta text-bone-white hover:bg-clay disabled:opacity-50 transition-colors"
         >
           <Save className="h-4 w-4" />
-          {isSaving ? 'Saving...' : 'Save Changes'}
+          {isSaving ? t('components.infoCard.editor.saving') : t('components.infoCard.editor.saveChanges')}
         </button>
       </div>
     </div>

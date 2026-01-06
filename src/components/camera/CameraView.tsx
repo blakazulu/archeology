@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Camera, SwitchCamera, X, AlertCircle, CameraOff } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useCamera, useHaptics } from '@/hooks';
 import { cn } from '@/lib/utils';
 import { CaptureOverlay } from './CaptureOverlay';
@@ -12,6 +13,7 @@ interface CameraViewProps {
 }
 
 export function CameraView({ onCapture, onClose, className }: CameraViewProps) {
+  const { t } = useTranslation();
   const { haptic } = useHaptics();
   const {
     videoRef,
@@ -78,23 +80,23 @@ export function CameraView({ onCapture, onClose, className }: CameraViewProps) {
             <CameraOff className="w-8 h-8 text-rust-red" />
           </div>
           <h2 className="font-heading text-xl font-semibold text-charcoal mb-2">
-            Camera Access Denied
+            {t('components.camera.accessDenied')}
           </h2>
           <p className="text-stone-gray text-sm mb-6">
-            {error?.message || 'Please allow camera access in your browser settings to capture artifact photos.'}
+            {error?.message || t('components.camera.accessDeniedDesc')}
           </p>
           <div className="space-y-3">
             <button
               onClick={() => startCamera()}
               className="w-full py-3 px-4 bg-terracotta text-bone-white rounded-xl font-medium hover:bg-clay transition-colors"
             >
-              Try Again
+              {t('components.camera.tryAgain')}
             </button>
             <button
               onClick={handleClose}
               className="w-full py-3 px-4 bg-transparent text-stone-gray rounded-xl font-medium hover:bg-desert-sand/20 transition-colors"
             >
-              Cancel
+              {t('components.camera.cancel')}
             </button>
           </div>
         </div>
@@ -111,16 +113,16 @@ export function CameraView({ onCapture, onClose, className }: CameraViewProps) {
             <AlertCircle className="w-8 h-8 text-gold-ochre" />
           </div>
           <h2 className="font-heading text-xl font-semibold text-charcoal mb-2">
-            Camera Not Supported
+            {t('components.camera.notSupported')}
           </h2>
           <p className="text-stone-gray text-sm mb-6">
-            Your browser doesn't support camera access. Please try using a modern browser like Chrome, Safari, or Firefox.
+            {t('components.camera.notSupportedDesc')}
           </p>
           <button
             onClick={handleClose}
             className="w-full py-3 px-4 bg-terracotta text-bone-white rounded-xl font-medium hover:bg-clay transition-colors"
           >
-            Go Back
+            {t('components.camera.goBack')}
           </button>
         </div>
       </div>
@@ -136,23 +138,23 @@ export function CameraView({ onCapture, onClose, className }: CameraViewProps) {
             <AlertCircle className="w-8 h-8 text-rust-red" />
           </div>
           <h2 className="font-heading text-xl font-semibold text-charcoal mb-2">
-            Camera Error
+            {t('components.camera.error')}
           </h2>
           <p className="text-stone-gray text-sm mb-6">
-            {error?.message || 'An error occurred while accessing the camera.'}
+            {error?.message || t('components.camera.errorDesc')}
           </p>
           <div className="space-y-3">
             <button
               onClick={() => startCamera()}
               className="w-full py-3 px-4 bg-terracotta text-bone-white rounded-xl font-medium hover:bg-clay transition-colors"
             >
-              Try Again
+              {t('components.camera.tryAgain')}
             </button>
             <button
               onClick={handleClose}
               className="w-full py-3 px-4 bg-transparent text-stone-gray rounded-xl font-medium hover:bg-desert-sand/20 transition-colors"
             >
-              Cancel
+              {t('components.camera.cancel')}
             </button>
           </div>
         </div>
@@ -179,7 +181,7 @@ export function CameraView({ onCapture, onClose, className }: CameraViewProps) {
         <div className="absolute inset-0 flex items-center justify-center bg-black/60">
           <div className="text-center">
             <LoadingSpinner size="lg" />
-            <p className="text-bone-white mt-4">Starting camera...</p>
+            <p className="text-bone-white mt-4">{t('components.camera.startingCamera')}</p>
           </div>
         </div>
       )}
@@ -193,7 +195,7 @@ export function CameraView({ onCapture, onClose, className }: CameraViewProps) {
           <button
             onClick={handleClose}
             className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors"
-            aria-label="Close camera"
+            aria-label={t('components.camera.closeCamera')}
           >
             <X className="w-6 h-6" />
           </button>
@@ -203,7 +205,7 @@ export function CameraView({ onCapture, onClose, className }: CameraViewProps) {
               onClick={handleSwitchCamera}
               disabled={!isActive}
               className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors disabled:opacity-50"
-              aria-label="Switch camera"
+              aria-label={t('components.camera.switchCamera')}
             >
               <SwitchCamera className="w-6 h-6" />
             </button>
@@ -218,7 +220,7 @@ export function CameraView({ onCapture, onClose, className }: CameraViewProps) {
             onClick={handleCapture}
             disabled={!isActive}
             className="w-20 h-20 rounded-full bg-bone-white border-4 border-terracotta flex items-center justify-center hover:scale-105 active:scale-95 transition-transform disabled:opacity-50 disabled:hover:scale-100"
-            aria-label="Capture photo"
+            aria-label={t('components.camera.capturePhoto')}
           >
             <Camera className="w-8 h-8 text-terracotta" />
           </button>
@@ -226,7 +228,7 @@ export function CameraView({ onCapture, onClose, className }: CameraViewProps) {
 
         {/* Camera mode indicator */}
         <p className="text-center text-white/60 text-sm mt-4">
-          {currentFacing === 'user' ? 'Front Camera' : 'Back Camera'}
+          {currentFacing === 'user' ? t('components.camera.frontCamera') : t('components.camera.backCamera')}
         </p>
       </div>
     </div>

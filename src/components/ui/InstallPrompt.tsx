@@ -16,9 +16,15 @@ interface BeforeInstallPromptEvent extends Event {
 const INSTALL_DISMISSED_KEY = 'savethepast_install_dismissed';
 const INSTALL_DISMISSED_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
 
+// Check if device is mobile
+const isMobileDevice = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+    window.innerWidth < 768;
+};
+
 /**
  * PWA Install prompt component with archaeology-themed styling
- * Shows when the app is installable and hasn't been dismissed recently
+ * Shows on MOBILE ONLY when the app is installable and hasn't been dismissed recently
  */
 export function InstallPrompt() {
   const { t } = useTranslation();
@@ -48,8 +54,8 @@ export function InstallPrompt() {
       const promptEvent = e as BeforeInstallPromptEvent;
       setDeferredPrompt(promptEvent);
 
-      // Only show if not recently dismissed
-      if (!wasRecentlyDismissed()) {
+      // Only show on mobile and if not recently dismissed
+      if (isMobileDevice() && !wasRecentlyDismissed()) {
         setIsVisible(true);
       }
     };

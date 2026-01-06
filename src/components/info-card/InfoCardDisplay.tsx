@@ -12,6 +12,7 @@ import {
   Sparkles,
   Edit3,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import type { InfoCard } from '@/types';
 
@@ -69,6 +70,7 @@ export function InfoCardDisplay({
   showEditButton = true,
   compact = false,
 }: InfoCardDisplayProps) {
+  const { t } = useTranslation();
   const [expandedSection, setExpandedSection] = useState<string | null>(
     compact ? null : 'material'
   );
@@ -88,9 +90,9 @@ export function InfoCardDisplay({
             <Sparkles className="h-4 w-4 text-bone-white" />
           </div>
           <div>
-            <h3 className="font-heading font-semibold text-charcoal">AI Analysis</h3>
+            <h3 className="font-heading font-semibold text-charcoal">{t('components.infoCard.display.aiAnalysis')}</h3>
             <p className="text-xs text-stone-gray">
-              Confidence: {formatConfidence(infoCard.aiConfidence)}
+              {t('components.infoCard.display.confidence')}: {formatConfidence(infoCard.aiConfidence)}
             </p>
           </div>
         </div>
@@ -100,7 +102,7 @@ export function InfoCardDisplay({
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-aged-paper border border-desert-sand text-sm text-charcoal hover:bg-desert-sand/50 transition-colors"
           >
             <Edit3 className="h-3.5 w-3.5" />
-            Edit
+            {t('components.infoCard.display.edit')}
           </button>
         )}
       </div>
@@ -109,14 +111,14 @@ export function InfoCardDisplay({
       {infoCard.isHumanEdited && (
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-oxidized-bronze/10 border border-oxidized-bronze/30 text-sm">
           <Edit3 className="h-4 w-4 text-oxidized-bronze" />
-          <span className="text-oxidized-bronze">Edited by archaeologist</span>
+          <span className="text-oxidized-bronze">{t('components.infoCard.display.editedByArchaeologist')}</span>
         </div>
       )}
 
       {/* Material Section */}
       <InfoSection
         icon={Gem}
-        title="Material"
+        title={t('components.infoCard.display.material')}
         content={infoCard.material}
         isExpanded={!compact || expandedSection === 'material'}
         onToggle={() => compact && toggleSection('material')}
@@ -135,7 +137,7 @@ export function InfoCardDisplay({
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-terracotta" />
             <span className="text-xs font-medium text-stone-gray uppercase tracking-wide">
-              Estimated Age
+              {t('components.infoCard.display.estimatedAge')}
             </span>
           </div>
           {compact && (
@@ -159,9 +161,7 @@ export function InfoCardDisplay({
               )}
             >
               <ConfidenceIcon className="h-3 w-3" />
-              {infoCard.estimatedAge.confidence.charAt(0).toUpperCase() +
-                infoCard.estimatedAge.confidence.slice(1)}{' '}
-              confidence
+              {t(`components.infoCard.display.confidence${infoCard.estimatedAge.confidence.charAt(0).toUpperCase() + infoCard.estimatedAge.confidence.slice(1)}`)}
             </div>
 
             {/* Reasoning */}
@@ -177,7 +177,7 @@ export function InfoCardDisplay({
       {/* Possible Use Section */}
       <InfoSection
         icon={Wrench}
-        title="Possible Use"
+        title={t('components.infoCard.display.possibleUse')}
         content={infoCard.possibleUse}
         isExpanded={!compact || expandedSection === 'use'}
         onToggle={() => compact && toggleSection('use')}
@@ -187,7 +187,7 @@ export function InfoCardDisplay({
       {/* Cultural Context Section */}
       <InfoSection
         icon={Globe}
-        title="Cultural Context"
+        title={t('components.infoCard.display.culturalContext')}
         content={infoCard.culturalContext}
         isExpanded={!compact || expandedSection === 'culture'}
         onToggle={() => compact && toggleSection('culture')}
@@ -207,7 +207,7 @@ export function InfoCardDisplay({
             <div className="flex items-center gap-2">
               <Archive className="h-4 w-4 text-terracotta" />
               <span className="text-xs font-medium text-stone-gray uppercase tracking-wide">
-                Similar Artifacts
+                {t('components.infoCard.display.similarArtifacts')}
               </span>
             </div>
             {compact && (
@@ -240,7 +240,7 @@ export function InfoCardDisplay({
       {/* Preservation Notes Section */}
       <InfoSection
         icon={Shield}
-        title="Preservation Notes"
+        title={t('components.infoCard.display.preservationNotes')}
         content={infoCard.preservationNotes}
         isExpanded={!compact || expandedSection === 'preservation'}
         onToggle={() => compact && toggleSection('preservation')}
@@ -253,7 +253,7 @@ export function InfoCardDisplay({
         <div className="flex items-start gap-2">
           <AlertTriangle className="h-4 w-4 text-desert-teal flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-xs font-medium text-desert-teal mb-1">AI Disclaimer</p>
+            <p className="text-xs font-medium text-desert-teal mb-1">{t('components.infoCard.display.aiDisclaimer')}</p>
             <p className="text-xs text-stone-gray">{infoCard.disclaimer}</p>
           </div>
         </div>
@@ -261,9 +261,9 @@ export function InfoCardDisplay({
 
       {/* Metadata footer */}
       <div className="flex items-center justify-between text-xs text-stone-gray pt-2 border-t border-desert-sand/50">
-        <span>Model: {infoCard.aiModel}</span>
+        <span>{t('components.infoCard.display.model')}: {infoCard.aiModel}</span>
         <span>
-          Generated: {new Date(infoCard.createdAt).toLocaleDateString()}
+          {t('components.infoCard.display.generated')}: {new Date(infoCard.createdAt).toLocaleDateString()}
         </span>
       </div>
     </div>

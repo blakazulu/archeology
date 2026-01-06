@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, Download, Trash2, Palette, Calendar, Cpu, AlertTriangle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { formatDate } from '@/lib/utils';
 import type { ColorVariant, ArtifactImage, ColorScheme } from '@/types/artifact';
@@ -15,50 +16,26 @@ interface VariantDetailViewProps {
 }
 
 /**
- * Get color scheme display name and description
+ * Get color scheme key for translations
  */
-function getColorSchemeInfo(scheme: ColorScheme): { label: string; description: string } {
+function getColorSchemeKey(scheme: ColorScheme): string {
   switch (scheme) {
     case 'roman':
-      return {
-        label: 'Roman',
-        description: 'Rich reds, ochres, and earth tones typical of Roman art',
-      };
+      return 'roman';
     case 'greek':
-      return {
-        label: 'Greek',
-        description: 'Blues, terracotta, and natural pigments of ancient Greece',
-      };
+      return 'greek';
     case 'egyptian':
-      return {
-        label: 'Egyptian',
-        description: 'Vibrant blues, gold, and turquoise of ancient Egypt',
-      };
+      return 'egyptian';
     case 'mesopotamian':
-      return {
-        label: 'Mesopotamian',
-        description: 'Deep blues, bronze, and earthy tones of Mesopotamia',
-      };
+      return 'mesopotamian';
     case 'weathered':
-      return {
-        label: 'Weathered',
-        description: 'Faded colors showing effects of time and exposure',
-      };
+      return 'weathered';
     case 'original':
-      return {
-        label: 'Original',
-        description: 'Best estimate of original coloring based on analysis',
-      };
+      return 'original';
     case 'custom':
-      return {
-        label: 'Custom',
-        description: 'Custom color scheme based on specific prompt',
-      };
+      return 'custom';
     default:
-      return {
-        label: 'Unknown',
-        description: 'Color scheme information unavailable',
-      };
+      return 'unknown';
   }
 }
 
@@ -73,6 +50,7 @@ export function VariantDetailView({
   onDownload,
   onDelete,
 }: VariantDetailViewProps) {
+  const { t } = useTranslation();
   const [variantUrl, setVariantUrl] = useState<string | null>(null);
   const [originalUrl, setOriginalUrl] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -97,7 +75,9 @@ export function VariantDetailView({
     return undefined;
   }, [originalImage.blob]);
 
-  const schemeInfo = getColorSchemeInfo(variant.colorScheme);
+  const schemeKey = getColorSchemeKey(variant.colorScheme);
+  const schemeLabel = t(`components.colorization.schemes.${schemeKey}`);
+  const schemeDesc = t(`components.colorization.schemes.${schemeKey}Desc`);
 
   const handleDeleteClick = () => {
     setShowDeleteConfirm(true);
@@ -155,9 +135,9 @@ export function VariantDetailView({
             </div>
             <div>
               <h2 className="font-heading text-lg font-semibold text-charcoal">
-                {schemeInfo.label} Color Variant
+                {schemeLabel} {t('components.colorization.variant.colorVariant')}
               </h2>
-              <p className="text-sm text-stone-gray">{schemeInfo.description}</p>
+              <p className="text-sm text-stone-gray">{schemeDesc}</p>
             </div>
           </div>
 
@@ -165,7 +145,7 @@ export function VariantDetailView({
           <button
             onClick={onClose}
             className="p-2 rounded-full hover:bg-desert-sand/50 transition-colors"
-            aria-label="Close"
+            aria-label={t('common.buttons.close')}
           >
             <X className="h-6 w-6 text-stone-gray" />
           </button>
@@ -178,8 +158,8 @@ export function VariantDetailView({
             <BeforeAfterSlider
               beforeImage={originalUrl}
               afterImage={variantUrl}
-              beforeLabel="Original"
-              afterLabel={schemeInfo.label}
+              beforeLabel={t('components.colorization.variant.before')}
+              afterLabel={schemeLabel}
               className="max-w-2xl mx-auto"
             />
           )}
@@ -190,19 +170,19 @@ export function VariantDetailView({
             <div className="p-4 rounded-lg bg-bone-white border border-desert-sand">
               <div className="flex items-center gap-2 mb-2">
                 <Palette className="w-4 h-4 text-terracotta" />
-                <span className="text-sm font-medium text-stone-gray">Color Scheme</span>
+                <span className="text-sm font-medium text-stone-gray">{t('components.colorization.colorScheme')}</span>
               </div>
-              <p className="text-charcoal font-medium">{schemeInfo.label}</p>
+              <p className="text-charcoal font-medium">{schemeLabel}</p>
             </div>
 
             {/* AI Model */}
             <div className="p-4 rounded-lg bg-bone-white border border-desert-sand">
               <div className="flex items-center gap-2 mb-2">
                 <Cpu className="w-4 h-4 text-terracotta" />
-                <span className="text-sm font-medium text-stone-gray">AI Model</span>
+                <span className="text-sm font-medium text-stone-gray">{t('components.modelViewer.aiModel')}</span>
               </div>
               <p className="text-charcoal font-medium truncate">
-                {variant.aiModel || 'Unknown'}
+                {variant.aiModel || t('components.colorization.schemes.unknown')}
               </p>
             </div>
 
@@ -210,7 +190,7 @@ export function VariantDetailView({
             <div className="p-4 rounded-lg bg-bone-white border border-desert-sand">
               <div className="flex items-center gap-2 mb-2">
                 <Calendar className="w-4 h-4 text-terracotta" />
-                <span className="text-sm font-medium text-stone-gray">Created</span>
+                <span className="text-sm font-medium text-stone-gray">{t('components.modelViewer.created')}</span>
               </div>
               <p className="text-charcoal font-medium">
                 {formatDate(variant.createdAt)}
@@ -221,7 +201,7 @@ export function VariantDetailView({
           {/* Prompt (if custom) */}
           {variant.prompt && (
             <div className="max-w-2xl mx-auto p-4 rounded-lg bg-bone-white border border-desert-sand">
-              <p className="text-sm font-medium text-stone-gray mb-2">Generation Prompt</p>
+              <p className="text-sm font-medium text-stone-gray mb-2">{t('components.colorization.customColorDescription')}</p>
               <p className="text-charcoal">{variant.prompt}</p>
             </div>
           )}
@@ -232,12 +212,10 @@ export function VariantDetailView({
               <AlertTriangle className="w-5 h-5 text-gold-ochre flex-shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-medium text-charcoal mb-1">
-                  Speculative Reconstruction
+                  {t('components.colorization.speculativeReconstruction')}
                 </p>
                 <p className="text-sm text-stone-gray">
-                  This color reconstruction is AI-generated and represents a speculative
-                  interpretation of how the artifact may have appeared. It should not be
-                  considered historically accurate without expert validation.
+                  {t('components.colorization.speculativeDescription')}
                 </p>
               </div>
             </div>
@@ -259,7 +237,7 @@ export function VariantDetailView({
                 )}
               >
                 <Trash2 className="w-4 h-4" />
-                Delete
+                {t('common.buttons.delete')}
               </button>
             )}
 
@@ -274,7 +252,7 @@ export function VariantDetailView({
               )}
             >
               <Download className="w-4 h-4" />
-              Download
+              {t('components.colorization.export.download')}
             </button>
           </div>
         </div>
@@ -297,17 +275,16 @@ export function VariantDetailView({
 
             {/* Content */}
             <h3 className="font-heading text-xl font-semibold text-charcoal text-center mb-2">
-              Delete Color Variant?
+              {t('components.colorization.variant.deleteVariantTitle')}
             </h3>
 
             <p className="text-stone-gray text-center mb-2">
-              Are you sure you want to delete this{' '}
-              <span className="font-medium text-charcoal">{schemeInfo.label}</span> color
-              variant?
+              {t('components.colorization.variant.deleteConfirmMessage')}{' '}
+              <span className="font-medium text-charcoal">{schemeLabel}</span> {t('components.colorization.variant.colorVariant').toLowerCase()}?
             </p>
 
             <p className="text-sm text-rust-red text-center mb-6">
-              This action cannot be undone.
+              {t('components.colorization.variant.deleteWarning')}
             </p>
 
             {/* Actions */}
@@ -317,7 +294,7 @@ export function VariantDetailView({
                 disabled={isDeleting}
                 className="flex-1 py-3 px-4 rounded-lg border border-desert-sand bg-bone-white text-charcoal font-medium hover:bg-aged-paper transition-colors disabled:opacity-50"
               >
-                Cancel
+                {t('common.buttons.cancel')}
               </button>
               <button
                 onClick={handleConfirmDelete}
@@ -327,10 +304,10 @@ export function VariantDetailView({
                 {isDeleting ? (
                   <>
                     <LoadingSpinner size="sm" />
-                    Deleting...
+                    {t('components.colorization.variant.deleting')}
                   </>
                 ) : (
-                  'Delete'
+                  t('common.buttons.delete')
                 )}
               </button>
             </div>

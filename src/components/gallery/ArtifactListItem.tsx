@@ -9,6 +9,7 @@ import type { Artifact } from '@/types';
 interface ArtifactListItemProps {
   artifact: Artifact;
   className?: string;
+  basePath?: string; // Base path for navigation (e.g., '/save' or '/palette')
 }
 
 /**
@@ -36,7 +37,7 @@ function getStatusInfo(status: Artifact['status'], t: (key: string) => string): 
 /**
  * Compact list row for artifact display
  */
-export function ArtifactListItem({ artifact, className }: ArtifactListItemProps) {
+export function ArtifactListItem({ artifact, className, basePath }: ArtifactListItemProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
@@ -55,9 +56,26 @@ export function ArtifactListItem({ artifact, className }: ArtifactListItemProps)
   const siteName = artifact.metadata?.siteName;
   const displayDate = formatDate(artifact.metadata?.dateFound || artifact.createdAt);
 
+  const handleClick = () => {
+    const captureMode = artifact.metadata?.captureMode;
+    let path: string;
+
+    if (basePath) {
+      path = `${basePath}/artifact/${artifact.id}`;
+    } else if (captureMode === 'palette') {
+      path = `/palette/artifact/${artifact.id}`;
+    } else if (captureMode === 'save') {
+      path = `/save/artifact/${artifact.id}`;
+    } else {
+      path = `/save/artifact/${artifact.id}`;
+    }
+
+    navigate(path);
+  };
+
   return (
     <button
-      onClick={() => navigate(`/artifact/${artifact.id}`)}
+      onClick={handleClick}
       className={cn(
         'w-full flex items-center gap-3 p-3 rounded-lg',
         'bg-bone-white hover:bg-aged-paper/50',

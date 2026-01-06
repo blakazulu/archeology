@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { Upload, X, Image as ImageIcon, AlertCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 interface FileUploadProps {
@@ -24,6 +25,7 @@ export function FileUpload({
   acceptedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'],
   className,
 }: FileUploadProps) {
+  const { t } = useTranslation();
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<Map<string, string>>(new Map());
@@ -33,17 +35,17 @@ export function FileUpload({
   const validateFile = useCallback((file: File): string | null => {
     // Check type
     if (!acceptedTypes.includes(file.type)) {
-      return `Invalid file type. Accepted: JPEG, PNG, WebP, HEIC`;
+      return t('components.fileUpload.invalidType');
     }
 
     // Check size
     const sizeMB = file.size / (1024 * 1024);
     if (sizeMB > maxSizeMB) {
-      return `File too large (${sizeMB.toFixed(1)}MB). Max: ${maxSizeMB}MB`;
+      return t('components.fileUpload.fileTooLarge', { size: sizeMB.toFixed(1), max: maxSizeMB });
     }
 
     return null;
-  }, [acceptedTypes, maxSizeMB]);
+  }, [acceptedTypes, maxSizeMB, t]);
 
   const processFiles = useCallback((files: FileList | File[]) => {
     const fileArray = Array.from(files);
@@ -55,7 +57,7 @@ export function FileUpload({
     if (fileArray.length > remainingSlots) {
       newErrors.push({
         file: 'Multiple files',
-        error: `Can only add ${remainingSlots} more file(s). Max: ${maxFiles}`,
+        error: t('components.fileUpload.maxFilesReached', { count: remainingSlots, max: maxFiles }),
       });
     }
 
@@ -137,17 +139,17 @@ export function FileUpload({
               onClick={onCancel}
               className="text-stone-gray hover:text-charcoal"
             >
-              Cancel
+              {t('components.fileUpload.cancel')}
             </button>
             <h2 className="font-heading text-lg font-semibold text-charcoal">
-              Upload Photos
+              {t('components.fileUpload.uploadPhotos')}
             </h2>
             <button
               onClick={handleContinue}
               disabled={selectedFiles.length === 0}
               className="text-terracotta font-medium disabled:opacity-50"
             >
-              Continue
+              {t('components.fileUpload.continue')}
             </button>
           </div>
         </div>
@@ -179,13 +181,13 @@ export function FileUpload({
               <Upload className="w-8 h-8 text-sienna" />
             </div>
             <p className="font-medium text-charcoal mb-1">
-              Drag & drop photos here
+              {t('components.fileUpload.dragAndDrop')}
             </p>
             <p className="text-stone-gray text-sm">
-              or tap to browse files
+              {t('components.fileUpload.orTapToBrowse')}
             </p>
             <p className="text-stone-gray/60 text-xs mt-4">
-              JPEG, PNG, WebP, HEIC up to {maxSizeMB}MB
+              {t('components.fileUpload.acceptedFormats', { maxSize: maxSizeMB })}
             </p>
           </div>
 
@@ -207,7 +209,7 @@ export function FileUpload({
           {selectedFiles.length > 0 && (
             <div className="mt-6">
               <h3 className="font-medium text-charcoal mb-3">
-                Selected Photos ({selectedFiles.length}/{maxFiles})
+                {t('components.fileUpload.selectedPhotos', { count: selectedFiles.length, max: maxFiles })}
               </h3>
               <div className="grid grid-cols-3 gap-3">
                 {selectedFiles.map((file, idx) => {
@@ -260,8 +262,8 @@ export function FileUpload({
             className="w-full py-4 bg-terracotta text-bone-white rounded-xl font-medium disabled:opacity-50 hover:bg-clay transition-colors"
           >
             {selectedFiles.length === 0
-              ? 'Select photos to continue'
-              : `Continue with ${selectedFiles.length} photo${selectedFiles.length === 1 ? '' : 's'}`}
+              ? t('components.fileUpload.continue')
+              : t('components.fileUpload.continue')}
           </button>
         </div>
       </div>

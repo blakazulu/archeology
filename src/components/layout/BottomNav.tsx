@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Camera, FolderOpen, Settings } from 'lucide-react';
+import { Home, Box, Palette, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { useHaptics } from '@/hooks';
@@ -12,8 +12,8 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { to: '/', icon: Home, labelKey: 'nav.home' },
-  { to: '/capture', icon: Camera, labelKey: 'nav.capture' },
-  { to: '/gallery', icon: FolderOpen, labelKey: 'nav.gallery' },
+  { to: '/save', icon: Box, labelKey: 'nav.save' },
+  { to: '/palette', icon: Palette, labelKey: 'nav.palette' },
   { to: '/settings', icon: Settings, labelKey: 'nav.settings' },
 ];
 

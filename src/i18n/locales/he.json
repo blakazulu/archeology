@@ -7,7 +7,9 @@
     "home": "בית",
     "capture": "צילום",
     "gallery": "גלריה",
-    "settings": "הגדרות"
+    "settings": "הגדרות",
+    "save": "שמירה",
+    "palette": "פלטה"
   },
   "pages": {
     "home": {
@@ -86,6 +88,20 @@
         "top": "צלמו מלמעלה",
         "detail": "צלמו פרטים חשובים (אופציונלי)"
       }
+    },
+    "save": {
+      "galleryTitle": "ממצאים תלת-ממדיים",
+      "gallerySubtitle": "הממצאים המתועדים שלכם",
+      "viewGallery": "צפו בגלריה תלת-ממדית",
+      "viewGalleryDesc": "דפדפו בממצאים המשוחזרים שלכם",
+      "newCapture": "צילום חדש"
+    },
+    "palette": {
+      "galleryTitle": "ממצאים צבעוניים",
+      "gallerySubtitle": "שחזורי הצבע שלכם",
+      "viewGallery": "צפו בגלריית הצבעים",
+      "viewGalleryDesc": "דפדפו בממצאים הצבועים שלכם",
+      "newCapture": "צבע חדש"
     },
     "gallery": {
       "title": "הממצאים שלי",
@@ -245,6 +261,8 @@
       "customPlaceholder": "תארו את הצבעים הרצויים (לדוגמה: 'כחולי אוקיינוס עמוקים עם הבלטות ורוד אלמוגים וחול בז')",
       "customHelp": "היו תיאוריים לגבי הצבעים, החומרים והאסתטיקה הכללית שאתם מדמיינים.",
       "successMessage": "הצביעה הושלמה! צפו בממצא המשוחזר שלכם.",
+      "speculativeReconstruction": "שחזור היפותטי",
+      "speculativeDescription": "שחזור צבע זה נוצר באמצעות AI ומייצג פרשנות היפותטית של מראה הממצא המקורי. אין להתייחס אליו כמדויק היסטורית ללא אימות מומחים.",
       "progressLabels": {
         "idle": "מוכן לצביעה",
         "processing": "יוצר צבעים...",
@@ -274,7 +292,33 @@
         "original": "מקורי",
         "originalDesc": "צבעים מקוריים תוססים",
         "custom": "מותאם אישית",
-        "customDesc": "ההנחיה שלכם"
+        "customDesc": "ההנחיה שלכם",
+        "unknown": "לא ידוע"
+      },
+      "variant": {
+        "deleteConfirmTitle": "למחוק וריאנט זה?",
+        "deleteVariantTitle": "מחיקת וריאנט צבע?",
+        "deleteConfirmMessage": "האם אתם בטוחים שברצונכם למחוק את",
+        "deleteWarning": "לא ניתן לבטל פעולה זו.",
+        "deleting": "מוחק...",
+        "colorVariant": "וריאנט צבע",
+        "aiPrefix": "AI: ",
+        "original": "מקורי",
+        "originalImage": "תמונה מקורית",
+        "noColorVariants": "אין וריאנטים צבעוניים",
+        "before": "לפני",
+        "after": "אחרי"
+      },
+      "export": {
+        "exportColorVariants": "ייצוא וריאנטים צבעוניים",
+        "noVariantsAvailable": "אין וריאנטים צבעוניים זמינים לייצוא.",
+        "selectAll": "בחר הכל ({{count}} וריאנטים)",
+        "includeMetadataTitle": "כלול מטא-דאטה",
+        "includeMetadata": "הוסף קובץ JSON עם סכמות צבע, הנחיות ומידע מודל AI",
+        "exporting": "מייצא...",
+        "exported": "יוצא!",
+        "downloadZip": "הורד ZIP",
+        "download": "הורדה"
       },
       "status": {
         "converting": "ממיר תמונה...",
@@ -313,6 +357,95 @@
         "saving": "שומר במסד הנתונים...",
         "finishing": "מסיים...",
         "complete": "כרטיס המידע נוצר!"
+      },
+      "display": {
+        "aiAnalysis": "ניתוח AI",
+        "edit": "עריכה",
+        "editedByArchaeologist": "נערך על ידי ארכיאולוג",
+        "material": "חומר",
+        "estimatedAge": "גיל משוער",
+        "confidence": "ביטחון",
+        "confidenceHigh": "ביטחון גבוה",
+        "confidenceMedium": "ביטחון בינוני",
+        "confidenceLow": "ביטחון נמוך",
+        "possibleUse": "שימוש אפשרי",
+        "culturalContext": "הקשר תרבותי",
+        "similarArtifacts": "ממצאים דומים",
+        "preservationNotes": "הערות שימור",
+        "aiDisclaimer": "הצהרת AI",
+        "model": "מודל",
+        "generated": "נוצר"
+      },
+      "editor": {
+        "editInfoCard": "ערוך כרטיס מידע",
+        "resetToOriginal": "אפס למקור",
+        "material": "חומר",
+        "estimatedAge": "גיל משוער",
+        "confidenceLevel": "רמת ביטחון",
+        "reasoningOptional": "הנמקה (אופציונלי)",
+        "reasoningPlaceholder": "הסבירו את הנמקת התיארוך...",
+        "possibleUse": "שימוש אפשרי",
+        "culturalContext": "הקשר תרבותי",
+        "similarArtifacts": "ממצאים דומים",
+        "addSimilarArtifact": "הוסיפו ממצא דומה...",
+        "preservationNotes": "הערות שימור",
+        "saving": "שומר...",
+        "saveChanges": "שמור שינויים",
+        "failedToSave": "נכשל בשמירת כרטיס המידע"
+      },
+      "export": {
+        "exportInfoCard": "ייצא כרטיס מידע",
+        "chooseFormat": "בחרו פורמט ייצוא:",
+        "pdfReport": "דו\"ח PDF",
+        "pdfDesc": "דו\"ח להדפסה עם כל פרטי הממצא",
+        "jsonData": "נתוני JSON",
+        "jsonDesc": "נתונים מובנים למסדי נתונים או אינטגרציה",
+        "copyToClipboard": "העתק ללוח",
+        "copyDesc": "סיכום טקסט פשוט לשיתוף",
+        "cancel": "ביטול",
+        "failedToExportPdf": "נכשל בייצוא PDF. אנא נסו שוב.",
+        "failedToExportJson": "נכשל בייצוא JSON. אנא נסו שוב.",
+        "failedToCopy": "נכשל בהעתקה ללוח",
+        "reportTitle": "דו\"ח ממצא ארכיאולוגי",
+        "discoveryContext": "הקשר גילוי",
+        "site": "אתר",
+        "location": "מיקום",
+        "layer": "שכבה",
+        "aiNote": "הערה: ניתוח זה נוצר על ידי AI ויש לאמת אותו על ידי ארכיאולוגים מוסמכים.",
+        "generatedWith": "נוצר עם שימור העבר"
+      },
+      "metadataForm": {
+        "additionalContext": "הקשר נוסף (אופציונלי)",
+        "quickTemplates": "תבניות מהירות",
+        "siteName": "שם האתר",
+        "siteNamePlaceholder": "לדוגמה: תל מגידו, פומפיי",
+        "discoveryLocation": "מיקום הגילוי",
+        "discoveryLocationPlaceholder": "לדוגמה: חפירה א', ריבוע רשת B4",
+        "excavationLayer": "שכבת חפירה / הקשר",
+        "excavationLayerPlaceholder": "לדוגמה: שכבה III, הקשר 1042, סטרטום B",
+        "dateFound": "תאריך מציאה",
+        "gpsCoordinates": "קואורדינטות GPS",
+        "locationCaptured": "מיקום נלכד",
+        "clear": "נקה",
+        "gpsNotAvailable": "GPS לא זמין בדפדפן זה",
+        "locationDenied": "הרשאת מיקום נדחתה. אפשרו בהגדרות הדפדפן.",
+        "captureGpsLocation": "לכוד מיקום GPS",
+        "gettingLocation": "משיג מיקום...",
+        "additionalNotes": "הערות נוספות",
+        "notesPlaceholder": "כל תצפית, הקשר או פרט נוסף...",
+        "templates": {
+          "excavationSite": "אתר חפירה",
+          "excavationSiteDesc": "הקשר חפירה סטנדרטי",
+          "fieldSurvey": "סקר שטח",
+          "fieldSurveyDesc": "איסוף פני שטח בזמן סקר",
+          "rescueArchaeology": "ארכיאולוגיה הצלה",
+          "rescueArchaeologyDesc": "חפירת חירום/הצלה"
+        }
+      },
+      "confidenceLevels": {
+        "high": "גבוה",
+        "medium": "בינוני",
+        "low": "נמוך"
       }
     },
     "modelViewer": {
@@ -331,7 +464,52 @@
     "fileUpload": {
       "invalidType": "סוג קובץ לא חוקי. מקובל: JPEG, PNG, WebP, HEIC",
       "fileTooLarge": "הקובץ גדול מדי ({{size}}MB). מקסימום: {{max}}MB",
-      "maxFilesReached": "ניתן להוסיף עוד {{count}} קבצים בלבד. מקסימום: {{max}}"
+      "maxFilesReached": "ניתן להוסיף עוד {{count}} קבצים בלבד. מקסימום: {{max}}",
+      "cancel": "ביטול",
+      "uploadPhotos": "העלו תמונות",
+      "continue": "המשך",
+      "dragAndDrop": "גררו ושחררו תמונות כאן",
+      "orTapToBrowse": "או הקישו לעיון בקבצים",
+      "acceptedFormats": "JPEG, PNG, WebP, HEIC עד {{maxSize}}MB",
+      "selectedPhotos": "תמונות נבחרות ({{count}}/{{max}})",
+      "removePhoto": "הסירו תמונה"
+    },
+    "camera": {
+      "accessDenied": "הגישה למצלמה נדחתה",
+      "accessDeniedDesc": "אנא אפשרו גישה למצלמה בהגדרות הדפדפן כדי לצלם תמונות ממצאים.",
+      "notSupported": "המצלמה לא נתמכת",
+      "notSupportedDesc": "הדפדפן שלכם לא תומך בגישה למצלמה. אנא נסו להשתמש בדפדפן מודרני כמו Chrome, Safari או Firefox.",
+      "error": "שגיאת מצלמה",
+      "errorDesc": "אירעה שגיאה בעת הגישה למצלמה.",
+      "tryAgain": "נסו שוב",
+      "cancel": "ביטול",
+      "goBack": "חזרה",
+      "startingCamera": "מפעיל מצלמה...",
+      "closeCamera": "סגור מצלמה",
+      "switchCamera": "החלף מצלמה",
+      "capturePhoto": "צלם תמונה",
+      "frontCamera": "מצלמה קדמית",
+      "backCamera": "מצלמה אחורית"
+    },
+    "captureSession": {
+      "captured": "צולם",
+      "done": "סיום",
+      "cancel": "ביטול",
+      "capturedPhotos": "תמונות שצולמו",
+      "addPhoto": "הוסף תמונה",
+      "photosCount": "{{count}} / {{total}} תמונות",
+      "minimumPhotos": "נדרשות לפחות {{count}} תמונות"
+    },
+    "capturePreview": {
+      "preview": "תצוגה מקדימה",
+      "discardPhoto": "מחק תמונה",
+      "retakePhoto": "צלם מחדש",
+      "useThisPhoto": "השתמש בתמונה זו",
+      "tapToUse": "הקישו על הסימון כדי להשתמש בתמונה זו",
+      "capturedArtifact": "ממצא שצולם"
+    },
+    "captureOverlay": {
+      "centerArtifact": "מרכזו את הממצא במסגרת"
     },
     "deleteDialog": {
       "title": "למחוק את הממצא?",
@@ -363,6 +541,24 @@
     },
     "loadingScreen": {
       "loading": "טוען..."
+    },
+    "queueIndicator": {
+      "pendingOperation": "{{count}} פעולה ממתינה",
+      "pendingOperations": "{{count}} פעולות ממתינות",
+      "clickToProcess": "לחצו לעיבוד",
+      "waitingForConnection": "ממתין לחיבור",
+      "processing": "מעבד...",
+      "processNow": "עבד עכשיו",
+      "operations": {
+        "3dReconstruction": "שחזור תלת-ממדי",
+        "infoCardGeneration": "יצירת כרטיס מידע",
+        "colorization": "צביעה",
+        "unknown": "פעולה לא ידועה"
+      }
+    },
+    "languageSelector": {
+      "switchToHebrew": "עברו לעברית",
+      "switchToEnglish": "עברו לאנגלית"
     }
   },
   "common": {
@@ -375,7 +571,9 @@
       "back": "חזרה",
       "next": "הבא",
       "done": "סיום",
-      "retry": "נסה שוב"
+      "retry": "נסה שוב",
+      "copy": "העתק",
+      "export": "ייצוא"
     },
     "status": {
       "draft": "טיוטה",
@@ -392,7 +590,9 @@
       "networkError": "שגיאת רשת"
     },
     "labels": {
-      "loading": "טוען..."
+      "loading": "טוען...",
+      "exporting": "מייצא...",
+      "copied": "הועתק!"
     }
   }
 }
